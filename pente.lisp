@@ -398,6 +398,43 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_stone
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the stone at the position
+;;; Return : The stone -- O, W, B, or nil
+;;; *********************************************
+(defun get_stone (board position)
+
+  (cond
+        ; if the board is empty, return nil
+        ((null board) nil)
+
+        ; if the board is not empty, get the row
+        ; and then get the column of the row
+        ; and then get the stone at the position
+        ; in the column
+        (t (get_row
+
+              ; Get the column
+              (get_column
+                    board
+                    ; Extract the column char from the position
+                    (char-upcase (char (subseq position 0 1) 0))
+              )
+
+              ; Extract the row number from the position
+              (parse-integer (subseq position 1))
+           )
+        )
+  )
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -446,5 +483,19 @@
                 )
             )
             #\F
+        )
+)
+
+(
+  print 
+        (
+          get_stone
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            "F4"
         )
 )
