@@ -261,6 +261,87 @@
 
 )
 
+;;; *********************************************
+;;; Name   : print_board_cell
+;;; Purpose: Print a cell of the board
+;;; Return : nil
+;;; *********************************************
+(defun print_board_cell (cell)
+  (cond
+        ; if the cell is a number, 
+        ; it is a row marker, so print it
+        ; as two digits for alignment
+        ((numberp cell)  (format t "~2d" cell))
+        
+        
+        ; ((char-equal cell #\@) (princ "  "))
+
+        ; if the cell is a character 
+        ; it is a column marker
+        ((characterp cell) 
+        
+          (cond
+                ; if the cell is an @, it is the
+                ; beginning of a row marker, so print
+                ; two spaces for alignment
+                ((char-equal cell #\@) (princ "  "))
+
+                ; otherwise, print the character
+                (t (princ cell))
+          )
+        )
+
+        ; otherwise, it is a stone/empty cell, so print it
+        (t (princ cell))
+  )
+
+  ; print a space for readability
+  (princ " ")
+)
+
+;;; *********************************************
+;;; Name   : print_row
+;;; Purpose: Print a row of the board
+;;; Return : nil
+;;; *********************************************
+(
+  defun print_row (row)
+    (
+      cond
+        
+        ((null row) 
+                    ; print a newline to separate rows
+                    (terpri)
+        )
+
+        ( t
+            (print_board_cell (car row))
+            (print_row (cdr row))  
+        )
+    )
+    
+)
+
+;;; *********************************************
+;;; Name   : print_board
+;;; Purpose: Print the board
+;;; Return : nil
+;;; *********************************************
+(defun print_board (brd)
+  (
+    cond
+      ((null brd) nil)
+      ( t
+          
+            (print_row (car brd))
+            (print_board (cdr brd))
+          
+      )
+  )
+  
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -268,7 +349,7 @@
 
 
 (
-  print
+  print_board
         (
           cartesian_board
             (
