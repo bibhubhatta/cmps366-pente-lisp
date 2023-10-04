@@ -398,6 +398,32 @@
 
 )
 
+
+;;; *********************************************
+;;; Name   : row_number_from_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the row number from the position
+;;; Return : The row number
+;;; *********************************************
+(defun row_number_from_position (position)
+  (parse-integer (subseq position 1))
+)
+
+;;; *********************************************
+;;; Name   : column_char_from_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the column number from the position
+;;; Return : The column number
+;;; *********************************************
+(defun column_char_from_position (position)
+  (char-upcase (char (subseq position 0 1) 0))
+)
+
+
 ;;; *********************************************
 ;;; Name   : get_stone
 ;;; Args   : board, position
@@ -424,11 +450,11 @@
               (get_column
                     board
                     ; Extract the column char from the position
-                    (char-upcase (char (subseq position 0 1) 0))
+                    (column_char_from_position position)
               )
 
               ; Extract the row number from the position
-              (parse-integer (subseq position 1))
+              (row_number_from_position position)
            )
         )
   )
