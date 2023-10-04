@@ -369,6 +369,35 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_column
+;;; Args   : board, column
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          column is the character that represents
+;;;          the column in the board and as shown in
+;;;          the printed board
+;;; Purpose: Get a column of the board
+;;; Return : The column -- a list
+;;; *********************************************
+(defun get_column (board column)
+
+    (
+      cond
+            ((null board) nil)
+            
+            (t (cons 
+                        ; get the nth column of the board
+                        (nth (- (char-code column) 65) (car board))
+                        ; and recursively get the rest of the columns
+                        (get_column (cdr board) column)
+                        ; and cons the result
+                )    
+            )
+    )
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -403,4 +432,19 @@
         16
     )
 
+)
+
+; (trace get_column)
+
+(
+  print (
+          get_column
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            #\F
+        )
 )
