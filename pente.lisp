@@ -163,7 +163,7 @@
 ;;; Purpose: Get the board from the game state
 ;;; Return : The board -- a list of lists
 ;;; *********************************************
-(defun board (state)
+(defun get_board (state)
   (nth 0 state)
 )
 
@@ -327,14 +327,14 @@
 ;;; Purpose: Print the board
 ;;; Return : nil
 ;;; *********************************************
-(defun print_board (brd)
+(defun print_board (board)
   (
     cond
-      ((null brd) nil)
+      ((null board) nil)
       ( t
           
-            (print_row (car brd))
-            (print_board (cdr brd))
+            (print_row (car board))
+            (print_board (cdr board))
           
       )
   )
@@ -353,7 +353,7 @@
         (
           cartesian_board
             (
-              board
+              get_board
                 (
                   case_4
                 )
