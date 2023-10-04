@@ -342,6 +342,33 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_row
+;;; Args   : board, row
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          row is the number that represents
+;;;          the row in the board and as shown in
+;;;          the printed board
+;;; Purpose: Get a row of the board
+;;; Return : The row
+;;; *********************************************
+(defun get_row (board row)
+
+  (cond 
+        ; if the length of the board is equal to the row,
+        ; then the row is the first element of the board
+        ; because the board is labeled from bottom to top
+        ((= (length board) row) (car board))
+
+        ((< (length board) row) nil)
+
+        (t (get_row (cdr board) row))
+           
+  )
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -359,4 +386,21 @@
                 )
             )
         )
+)
+
+
+(
+  print_row
+    (
+      get_row
+        (
+          get_board
+            (
+              case_4
+            )
+        )
+
+        16
+    )
+
 )
