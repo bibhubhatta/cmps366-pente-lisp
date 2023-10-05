@@ -866,6 +866,52 @@
 
 )
 
+;;; *********************************************
+;;; Name   : convert_to_sequences
+;;; Args   : lst
+;;;          lst is a list of stones
+;;; Purpose: Convert the list of stones to a list
+;;;          of sequences
+;;; Return : The list of sequences (a list of lists)
+;;; *********************************************
+(defun convert_to_sequences (lst)
+  (cond
+
+      ((null lst) (list nil))
+
+      ((null (cdr lst)) (list (list (car lst))))
+
+
+      ; if the first element of the list is also the
+      ; first elemnent of the sequence in the rest of the list,
+      ; then cons the first element to the sequence
+      ((equal 
+      
+              ; first element of the list
+              (car lst) 
+
+              ; first element of the sequence in the rest of the list
+              (car (car(convert_to_sequences (cdr lst))))
+       ) 
+
+       ; cons the first element to the sequence inside the list
+        (cons
+
+        ; cons the item to the first element of the sequence
+        (cons (car lst) (car (convert_to_sequences (cdr lst))))
+
+        ; cons the rest of the list to the rest of the sequences
+        (cdr (convert_to_sequences (cdr lst)))
+        
+        )
+      )
+
+      ; otherwise, cons the first element as a new list
+      (t (cons (list (car lst)) (convert_to_sequences (cdr lst))))
+      
+  )
+
+)
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -990,4 +1036,28 @@
                       'B
                   )
               )
+)
+
+(terpri)
+(terpri)
+
+(print "Testing convert_to_sequences")
+
+; (trace convert_to_sequences)
+
+(
+  print 
+        (
+          convert_to_sequences
+            (
+              get_positive_diagonal
+                (
+                  get_board
+                    (
+                      case_4
+                    )
+                )
+                "h8"
+            )
+        )
 )
