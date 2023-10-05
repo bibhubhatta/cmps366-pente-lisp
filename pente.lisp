@@ -963,18 +963,28 @@
         ((null row) nil)
        
         (
-          (equal (car row) 'W) 
+          ; row needs to be reversed because,
+          ; to deduce the column char, we need
+          ; to get the length of the row
+          (equal (car (reverse row)) 'O) 
+          
           (
             cons 
                   (format nil "~a~a" 
                           (code-char (+ 64 (length row))) 
                           (write-to-string row_num)
                   )
-                  (get_empty_positions_in_row (cdr row) row_num)
+                  
+                  (get_empty_positions_in_row 
+                                ; remove the last element of the row
+                                ; and get the rest of the empty positions
+                                (reverse (cdr (reverse row))) 
+                                row_num
+                  )
           )
         )
         
-        (t (get_empty_positions_in_row (cdr row) row_num))
+        (t (get_empty_positions_in_row (reverse (cdr (reverse row))) row_num))
   )
 )
 
