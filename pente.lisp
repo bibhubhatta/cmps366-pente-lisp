@@ -883,15 +883,13 @@
 
 
       ; if the first element of the list is also the
-      ; first elemnent of the sequence in the rest of the list,
+      ; second element of the list,
       ; then cons the first element to the sequence
       ((equal 
-      
               ; first element of the list
               (car lst) 
-
-              ; first element of the sequence in the rest of the list
-              (car (car(convert_to_sequences (cdr lst))))
+              ; second element of the list
+              (cadr lst)
        ) 
 
        ; cons the first element to the sequence inside the list
