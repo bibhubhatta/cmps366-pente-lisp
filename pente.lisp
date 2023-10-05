@@ -989,6 +989,24 @@
 )
 
 
+;;; *********************************************
+;;; Name   : get_no_stones_on_board
+;;; Args   : board, stone
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          stone is the stone to be checked
+;;;          it is either O, W, or B
+;;; Purpose: Get the number of stones on the board
+;;; Return : The number of stones
+;;; *********************************************
+(  defun get_no_stones_on_board  (board stone)
+    (
+      count 
+            stone 
+            (unravel board)
+    )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1176,3 +1194,74 @@
 
 (terpri)
 (terpri)
+
+(print "Testing get_no_stones_on_board")
+(terpri)
+
+(princ "Number of black stones: ")
+(
+  princ
+        (
+          get_no_stones_on_board
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            'B
+        )
+)
+(terpri)
+
+(princ "Number of white stones: ")
+(
+  princ 
+        (
+          get_no_stones_on_board
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            'W
+        )
+)
+(terpri)
+
+(princ "Number of empty positions: ")
+(
+  princ
+        (
+          get_no_stones_on_board
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            'O
+        )
+)
+(terpri)
+
+
+(print "Printing board from case 4 for testing")
+(terpri)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+        )
+)
+
+
+
