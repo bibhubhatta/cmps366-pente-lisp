@@ -911,6 +911,21 @@
 
 )
 
+;;; *********************************************
+;;; Name   : unravel
+;;; Args   : lst
+;;;          lst can be a nested list of any depth
+;;; Purpose: Unravel the nested list to a list
+;;; Return : The list
+;;; *********************************************
+(defun unravel (lst)
+  (
+    cond
+      ((null lst) nil)
+      ((atom lst) (list lst))
+      (t (append (unravel (car lst)) (unravel (cdr lst))))
+  )
+)
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1061,3 +1076,18 @@
 
 (terpri)
 (terpri)
+
+(print "Testing unravel")
+
+(
+  print 
+        (
+          unravel
+            (
+                      get_board
+                        (
+                          case_4
+                        )
+            )
+        )
+)
