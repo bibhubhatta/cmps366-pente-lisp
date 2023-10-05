@@ -1137,6 +1137,7 @@
 (terpri)
 (terpri)
 
+(print "Testing set_stone at J1, black" )
 
 (
   print_board(
@@ -1173,3 +1174,5 @@
         )
 )
 
+(terpri)
+(terpri)
