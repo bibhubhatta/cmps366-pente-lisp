@@ -1018,6 +1018,29 @@
 (terpri)
 (terpri)
 
+(print "Testing convert_to_sequences with positive diagonal of h8")
+
+; (trace convert_to_sequences)
+
+(
+  print 
+        (
+          convert_to_sequences
+            (
+              get_positive_diagonal
+                (
+                  get_board
+                    (
+                      case_4
+                    )
+                )
+                "h8"
+            )
+        )
+)
+
+(terpri)
+(terpri)
 
 (
   print_board(
@@ -1038,24 +1061,3 @@
 
 (terpri)
 (terpri)
-
-(print "Testing convert_to_sequences")
-
-; (trace convert_to_sequences)
-
-(
-  print 
-        (
-          convert_to_sequences
-            (
-              get_positive_diagonal
-                (
-                  get_board
-                    (
-                      case_4
-                    )
-                )
-                "h8"
-            )
-        )
-)
