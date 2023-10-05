@@ -926,6 +926,59 @@
       (t (append (unravel (car lst)) (unravel (cdr lst))))
   )
 )
+
+;;; *********************************************
+;;; Name   : get_empty_positions
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the empty positions of the board
+;;; Return : The empty positions -- a list of position
+;;;          strings
+;;; *********************************************
+(defun get_empty_positions (board)
+  (cond
+        ((null board) nil)
+        (t (append 
+                (get_empty_positions (cdr board))
+                (get_empty_positions_in_row (car board) (length board))
+           )
+        )
+  )
+)
+
+;;; *********************************************
+;;; Name   : get_empty_positions_in_row
+;;; Args   : row, row_num
+;;;          row is a list
+;;;          row_num is the number that represents
+;;;          the row in the board and as shown in
+;;;          the printed board
+;;; Purpose: Get the empty positions in the row
+;;; Return : The empty positions -- a list of position
+;;;          strings
+;;; *********************************************
+(defun get_empty_positions_in_row (row row_num)
+  (cond
+        ((null row) nil)
+       
+        (
+          (equal (car row) 'W) 
+          (
+            cons 
+                  (format nil "~a~a" 
+                          (code-char (+ 64 (length row))) 
+                          (write-to-string row_num)
+                  )
+                  (get_empty_positions_in_row (cdr row) row_num)
+          )
+        )
+        
+        (t (get_empty_positions_in_row (cdr row) row_num))
+  )
+)
+
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1094,4 +1147,19 @@
 
 (terpri)
 (terpri)
+
+(print "Testing get_empty_positions")
+
+(
+  print 
+        (
+          get_empty_positions
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+        )
+)
 
