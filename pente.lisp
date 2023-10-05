@@ -385,6 +385,13 @@
     (
       cond
             ((null board) nil)
+
+            ; if column is negative, return nil
+            ; this is to enable compatibility with
+            ; functions that recursively call get_stone
+            ; and decrement the column char to find 
+            ; the end of the board
+            ((< (char-code column) 65) nil)
             
             (t (cons 
                         ; get the nth column of the board
@@ -396,6 +403,149 @@
             )
     )
 
+)
+
+
+;;; *********************************************
+;;; Name   : top_right_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the top right position of the position
+;;; Return : The top right position -- a string
+;;; *********************************************
+(defun top_right_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the next column char
+          (code-char (+ 1 (char-code (column_char_from_position position)))) 
+          ; get the next row number
+          (write-to-string (+ 1 (row_number_from_position position)))
+  )
+)
+
+;;; *********************************************
+;;; Name   : bottom_left_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the bottom left position of the position
+;;; Return : The bottom left position -- a string
+;;; *********************************************
+(defun bottom_left_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the previous column char
+          (code-char (- (char-code (column_char_from_position position)) 1)) 
+          ; get the previous row number
+          (write-to-string (- (row_number_from_position position) 1))
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : get_top_right_diagonal
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the top right diagonal of the board
+;;; Return : The top right diagonal -- a list
+;;; Algo   : Recursively append the top right diagonal
+;;;          until the end of the board is reached
+;;; *********************************************
+(defun get_top_right_diagonal (board position)
+
+  (cond   
+            ; if there are no more top right positions,
+            ; return nil
+            (
+               (null 
+                     (get_stone board (top_right_position position) ) )
+                nil
+            )
+
+            ; otherwise, append the top right position
+            ; and recursively get the rest of the top right
+            ; positions
+            (t (cons 
+                        (get_stone board (top_right_position position))
+                        (get_top_right_diagonal board (top_right_position position))
+                )
+            )
+
+         
+  )
+
+)
+
+;;; *********************************************
+;;; Name   : get_bottom_left_diagonal
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the bottom left diagonal of the board
+;;; Return : The bottom left diagonal -- a list
+;;; Algo   : Recursively append the bottom left diagonal
+;;;          until the end of the board is reached
+;;; *********************************************
+(defun get_bottom_left_diagonal (board position)
+
+  (cond   
+            ; if there are no more bottom left positions,
+            ; return nil
+            (
+               (null 
+                     (get_stone board (bottom_left_position position) ) )
+                nil
+            )
+
+            ; otherwise, append the bottom left position
+            ; and recursively get the rest of the bottom left
+            ; positions
+            (t (cons 
+                        (get_stone board (bottom_left_position position))
+                        (get_bottom_left_diagonal board (bottom_left_position position))
+                )
+            )
+
+         
+  )
+
+)
+
+
+
+;;; *********************************************
+;;; Name   : get_positive_diagonal
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the positive diagonal of the board
+;;; Return : The positive diagonal -- a list
+;;; Algo   : Appends the top right part and the
+;;;          bottom left part of the positive diagonal
+;;; *********************************************
+(defun get_positive_diagonal (board position)
+
+  (
+    append 
+          ; the bottom left part needs to be reversed
+          ; because the order of the stones is reversed
+          ; when getting the bottom left diagonal
+          (reverse (get_bottom_left_diagonal board position))
+           (list (get_stone board position))
+           (get_top_right_diagonal board position) 
+          
+  )
+  
 )
 
 
@@ -632,6 +782,25 @@
 
 
 (print "Testing set_stone")
+(terpri)
+
+(print "Testing get_positive_diagonal with e4")
+
+(
+  print 
+        (
+          get_positive_diagonal
+            (
+              get_board
+                (
+                  case_4
+                )
+            )
+            "e4"
+        )
+)
+
+(terpri)
 (terpri)
 
 (
