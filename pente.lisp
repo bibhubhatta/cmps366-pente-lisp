@@ -461,6 +461,110 @@
 
 )
 
+;;; *********************************************
+;;; Name   : replace_row
+;;; Args   : board, row_num, new_row
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          row_num is the number that represents
+;;;          the row in the board and as shown in
+;;;          the printed board
+;;;          new_row is the new row to replace the
+;;;          old row
+;;; Purpose: Replace the row of the board
+;;; Return : The board -- a list of lists
+;;; *********************************************
+(defun replace_row (board row_num new_row)
+
+  (cond
+        ((null board) nil)
+        ((< (length board) row_num) nil)
+
+        ; if the length of the board is equal to the row number,
+        ; then the row is the first element of the board
+        ((= (length board) row_num) (cons new_row (cdr board)))
+
+        ; otherwise, continue to replace the row
+        (t (cons (car board) (replace_row (cdr board) row_num new_row)))
+  )
+
+)
+
+;;; *********************************************
+;;; Name   : replace_stone_in_row
+;;; Args   : row, column, stone
+;;;          row is a list
+;;;          column is the number that represents
+;;;          the column in the board and as shown in
+;;;          the printed board
+;;;          stone is the stone to be set at the position
+;;;          it is either O, W, or B
+;;; Purpose: Replace the stone in the row
+;;; Return : The row -- a list
+;;; *********************************************
+(defun replace_stone_in_row (row column stone)
+
+  (cond
+        ((null row) nil)
+
+      
+        (
+          ; if the column is the first
+          (= 0 (- (char-code column) 65)) 
+          ; then the stone is the first element of the row
+          (cons stone (cdr row))
+        
+        )
+
+        (
+          ; otherwise, continue to replace the stone
+          t (cons (car row) (replace_stone_in_row 
+                                  (cdr row) 
+                                  ; decrement the column char
+                                  (code-char (- (char-code column) 1))
+                                  stone
+                            )
+            )
+        )
+  )
+
+)
+
+
+;;; *********************************************
+;;; Name   : set_stone
+;;; Args   : board, position, stone
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;;          stone is the stone to be set at the position
+;;;          it is either O, W, or B
+;;; Purpose: Set the stone at the position
+;;; Return : The board -- a list of lists
+;;; *********************************************
+(defun set_stone (board position stone)
+  
+  (
+
+    ; get the row and replace the the stone at the position
+    ; in the row
+    
+      replace_row 
+
+                  board
+                  (row_number_from_position position)
+
+                  (
+                    replace_stone_in_row
+                    (get_row board (row_number_from_position position))
+                    (column_char_from_position position)
+                    stone
+                  )      
+  )
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions
@@ -524,4 +628,25 @@
             )
             "F4"
         )
+)
+
+
+(print "Testing set_stone")
+(terpri)
+
+(
+  print_board(
+                cartesian_board
+                  (
+                    set_stone
+                      (
+                        get_board
+                          (
+                            case_4
+                          )
+                      )
+                      "j1"
+                      'B
+                  )
+              )
 )
