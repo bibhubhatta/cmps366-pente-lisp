@@ -1057,6 +1057,24 @@
 (terpri)
 (terpri)
 
+(print "Testing unravel")
+(
+  print 
+        (
+          unravel
+            (
+                      get_board
+                        (
+                          case_4
+                        )
+            )
+        )
+)
+
+(terpri)
+(terpri)
+
+
 (
   print_board(
                 cartesian_board
@@ -1077,17 +1095,3 @@
 (terpri)
 (terpri)
 
-(print "Testing unravel")
-
-(
-  print 
-        (
-          unravel
-            (
-                      get_board
-                        (
-                          case_4
-                        )
-            )
-        )
-)
