@@ -167,6 +167,60 @@
   (nth 0 state)
 )
 
+;;; *********************************************
+;;; Name   : other_stone
+;;; Args   : stone
+;;;          stone is the stone of the player
+;;; Purpose: Get the stone of the other player
+;;; Return : The stone -- W or B or nil if the player
+;;;         is invalid
+;;; *********************************************
+
+(defun other_stone (stone)
+  (cond
+    ; handle single character representations
+    ((equal stone 'W) 'B)
+    ((equal stone 'B) 'W)
+    ; handle full word representations
+    ((equal stone 'Black) 'White)
+    ((equal stone 'White) 'Black)
+    (t nil)
+  )
+)
+
+;;; *********************************************
+;;; Name   : other_player
+;;; Args   : player
+;;;          player is the Human or Computer
+;;; Purpose: Get the other player
+;;; Return : The other player -- Human or Computer
+;;; *********************************************
+(defun other_player (player)
+  (cond
+      ((equal player 'Human) 'Computer)
+      ((equal player 'Computer) 'Human)
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : get_stone_from_player
+;;; Args   : game_state, player
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the stone that the player is playing
+;;; Return : The stone -- W or B or nil if the player
+;;;         is invalid
+;;; *********************************************
+(defun get_stone_from_player (game_state player)
+
+  (cond
+    ((equal player (nth 5 game_state)) (nth 6 game_state))
+    ((equal (other_player player) (nth 5 game_state)) (other_stone (nth 6 game_state)))
+  )
+
+)
+
 ;;;; ******************************************************************
 ;;;; End of game state related functions
 ;;;; ******************************************************************
@@ -1622,6 +1676,68 @@
             'W
       )
      
+)
+
+(terpri)
+(terpri)
+
+(print "Testing get_stone_from_player with cases 3 and 4")
+(terpri)
+
+; (trace other_stone)
+; (trace other_player)
+; (trace get_stone_from_player)
+
+(format
+      t
+      "Human's stone in case 3: ~a~%"
+      (
+         get_stone_from_player
+            (
+              case_3
+            )
+
+            'human
+      )
+)
+
+(format
+      t
+      "Computer's stone in case 3: ~a~%"
+      (
+         get_stone_from_player
+            (
+              case_3
+            )
+
+            'computer
+      )
+)
+
+(format
+      t
+      "Human's stone in case 4: ~a~%"
+      (
+         get_stone_from_player
+            (
+              case_4
+            )
+
+            'human
+      )
+)
+
+(format
+      t
+      "Computer's stone in case 4: ~a~%"
+      (
+         get_stone_from_player
+            (
+              case_4
+            )
+
+            'computer
+      )
 )
 
 (terpri)
