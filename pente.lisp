@@ -1061,6 +1061,59 @@
   )
 )
 
+;;; *********************************************
+;;; Name   : get_all_diagonal_starts
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the diagonal starts of the board
+;;; Return : The diagonal starts -- a list of position
+;;;          strings
+;;; Algo   : Recursively append the diagonal starts
+;;;          until the end of the board is reached
+;;;          and remove the duplicates
+;;;          The diagonal starts are the cells
+;;;          of the first row and column of the board
+;;; *********************************************
+(defun get_all_diagonal_starts (board)
+  (
+    cond
+        ((null board) nil)
+        (
+          t 
+            (
+              ; duplicates need to be removed because
+              ; the first cell is in both the first 
+              ; row and the first olumn of the board
+              remove-duplicates
+              (
+                append
+                    (list
+                      
+                      ; cell in the first row
+                      (format nil "~a~a" 
+                              (code-char (+ 64 (length board))) 
+                              (write-to-string 1)
+                      )
+
+                      ; cell in the first column 
+                      (format nil "~a~a" 
+                              (code-char (+ 64 1)) 
+                              (write-to-string (length board))
+                      )
+
+                    )
+                    (get_all_diagonal_starts (cdr board))
+              )
+              :test #'equal
+
+            )
+        )
+
+
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1320,6 +1373,23 @@
 
 (terpri)
 (terpri)
+
+(print "Testing get_all_diagonal_starts with case 4")
+(terpri)
+
+(
+  print
+      (
+          get_all_diagonal_starts
+            (
+                get_board
+                  (
+                      case_4
+                  )
+            )
+      )
+     
+)
 
 (print "Printing board from case 4 for testing")
 (terpri)
