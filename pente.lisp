@@ -1223,6 +1223,69 @@
   )
 )
 
+
+;;; *********************************************
+;;; Name   : convert_board_sequences_to_stone_sequences
+;;; Args   : board, board_sequences
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          board_sequences is a list of lists
+;;;          that represent the sequences of the board
+;;;          e.g. rows, columns, diagonals
+;;; Purpose: Convert the board sequences to stone sequences
+;;; Return : The stone sequences -- a list of lists
+;;; *********************************************
+(defun convert_board_sequences_to_stone_sequences (board board_sequences)
+  (
+    cond
+        ((null board_sequences) nil)
+        (
+          t 
+            (
+              append 
+                    (convert_to_sequences (car board_sequences))
+                    (convert_board_sequences_to_stone_sequences board (cdr board_sequences))
+            )
+        )
+    
+   )
+)
+
+;;; *********************************************
+;;; Name   : get_all_stone_sequences
+;;; Args   : board, stone
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          stone is the stone to be checked
+;;;          it is either O, W, or B
+;;; Purpose: Get all the sequences of the board
+;;;          that contain the stone
+;;; Return : The sequences -- a list of lists
+;;; Algo   : Get all the sequences of the board
+;;;          and then convert the sequences to stone
+;;;          sequences, then filter the stone sequences
+;;;          to get only the sequences that contain
+;;;          the stone
+;;; *********************************************
+(defun get_all_stone_sequences (board stone)
+
+    ; filter the stone sequences to get only the sequences
+    ; that contain the stone
+    (remove-if-not
+      
+      #'(lambda (stone_sequence)
+          (member stone stone_sequence)
+        )
+
+      (
+        convert_board_sequences_to_stone_sequences 
+        board 
+        (get_all_board_sequences board)
+      )
+    )
+  
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1542,6 +1605,28 @@
 
 (terpri)
 (terpri)
+
+(print "Testing get_all_stone_sequences with case 4")
+(terpri)
+
+(
+  print
+      (
+          get_all_stone_sequences
+            (
+                get_board
+                  (
+                      case_4
+                  )
+            )
+            'W
+      )
+     
+)
+
+(terpri)
+(terpri)
+
 
 (print "Printing board from case 4 for testing")
 (terpri)
