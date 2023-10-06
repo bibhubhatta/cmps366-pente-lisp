@@ -1161,6 +1161,50 @@
   )
 )
 
+;;; *********************************************
+;;; Name   : get_diagonals_from_positions
+;;; Args   : board, positions
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          positions is a list of position strings
+;;; Purpose: Get the diagonals from the positions
+;;; Return : The diagonals -- a list of lists
+;;; Algo   : Recursively append the diagonals
+;;;          until the end of the positions is reached
+;;; *********************************************
+(defun get_diagonals_from_positions (board positions)
+  (
+    cond
+        ((null positions) nil)
+        (
+          t 
+            (
+              append 
+                    (list (get_positive_diagonal board (car positions)))
+                    (list (get_negative_diagonal board (car positions)))
+                    (get_diagonals_from_positions board (cdr positions))
+            )
+        )
+    
+   )
+)
+
+;;; *********************************************
+;;; Name   : get_all_diagonals
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the diagonals of the board
+;;; Return : The diagonals -- a list of lists
+;;; *********************************************
+(defun get_all_diagonals (board)
+
+  (
+    get_diagonals_from_positions board (get_all_diagonal_starts board)
+  )
+  
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1437,6 +1481,29 @@
       )
      
 )
+
+(terpri)
+(terpri)
+
+(print "Testing get_all_diagonals with case 4")
+(terpri)
+
+(
+  print
+      (
+          get_all_diagonals
+            (
+                get_board
+                  (
+                      case_4
+                  )
+            )
+      )
+     
+)
+
+(terpri)
+(terpri)
 
 (print "Printing board from case 4 for testing")
 (terpri)
