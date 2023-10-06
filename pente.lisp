@@ -1205,6 +1205,24 @@
   
 )
 
+;;; *********************************************
+;;; Name   : get_all_board_sequences
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the sequences of the board
+;;; Return : The sequences -- a list of lists
+;;; *********************************************
+(defun get_all_board_sequences (board)
+  (
+    append 
+          ; board is represented as a list of boards
+          board
+          (get_all_board_columns board)
+          (get_all_diagonals board)
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1492,6 +1510,26 @@
   print
       (
           get_all_diagonals
+            (
+                get_board
+                  (
+                      case_4
+                  )
+            )
+      )
+     
+)
+
+(terpri)
+(terpri)
+
+(print "Testing get_all_board_sequences with case 4")
+(terpri)
+
+(
+  print
+      (
+          get_all_board_sequences
             (
                 get_board
                   (
