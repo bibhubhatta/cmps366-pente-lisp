@@ -1007,6 +1007,60 @@
     )
 )
 
+;;; *********************************************
+;;; Name   : remove_first_column
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Remove the first column of the board
+;;; Return : The board -- a list of lists
+;;; *********************************************
+(defun remove_first_column (board)
+  (
+    cond
+      ((null board) nil)
+      (t (cons (cdr (car board)) (remove_first_column (cdr board))))
+  )
+)
+
+;;; *********************************************
+;;; Name   : get_first_column
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the first column of the board
+;;; Return : The first column -- a list
+;;; *********************************************
+(defun get_first_column (board)
+  (
+    cond
+      ((null board) nil)
+      (t (cons (caar board) (get_first_column (cdr board))))
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : get_all_board_columns
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the columns of the board
+;;; Return : The columns -- a list of lists
+;;; *********************************************
+(defun get_all_board_columns (board)
+  
+  (
+    cond
+      ((null (caar board)) nil)
+      (t (cons 
+              (get_first_column board)
+              (get_all_board_columns (remove_first_column board))
+         )
+      )
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
@@ -1246,6 +1300,26 @@
 )
 (terpri)
 
+
+(print "Testing get_all_board_columns with case 4")
+(terpri)
+
+(
+  print
+      (
+          get_all_board_columns
+            (
+                get_board
+                  (
+                      case_4
+                  )
+            )
+      )
+     
+)
+
+(terpri)
+(terpri)
 
 (print "Printing board from case 4 for testing")
 (terpri)
