@@ -1061,6 +1061,67 @@
   )
 )
 
+
+;;; *********************************************
+;;; Name   : get_first_row_positions
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the positions of the first row
+;;; Return : The positions -- a list of position
+;;;          strings
+;;; Algo   : Recursively append the positions
+;;;          until the end of the board is reached
+;;;          while removing the first row every time
+;;; *********************************************
+(defun get_first_row_positions (board)
+    (
+      cond
+            ((null board) nil)
+            (
+              t (cons 
+                      (format nil "~a~a" 
+                              (code-char (+ 64 (length board))) 
+                              (write-to-string 1)
+                      )
+                      (get_first_row_positions (cdr board))
+                 )
+            
+            )
+    )
+
+)
+
+;;; *********************************************
+;;; Name   : get_first_column_positions
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the positions of the first column
+;;; Return : The positions -- a list of position
+;;;          strings
+;;; Algo   : Recursively append the positions
+;;;          until the end of the board is reached
+;;;          while removing the first column every time
+;;; *********************************************
+(defun get_first_column_positions (board)
+    (
+      cond
+            ((null (caar board)) nil)
+            (
+              t (cons 
+                      (format nil "~a~a" 
+                              (code-char (+ 64 1)) 
+                              (write-to-string (length (car board)))
+                      )
+                      (get_first_column_positions (remove_first_column board))
+                 )
+            
+            )
+    )
+
+)
+
 ;;; *********************************************
 ;;; Name   : get_all_diagonal_starts
 ;;; Args   : board
@@ -1084,26 +1145,12 @@
             (
               ; duplicates need to be removed because
               ; the first cell is in both the first 
-              ; row and the first olumn of the board
+              ; row and the first column of the board
               remove-duplicates
               (
                 append
-                    (list
-                      
-                      ; cell in the first row
-                      (format nil "~a~a" 
-                              (code-char (+ 64 (length board))) 
-                              (write-to-string 1)
-                      )
-
-                      ; cell in the first column 
-                      (format nil "~a~a" 
-                              (code-char (+ 64 1)) 
-                              (write-to-string (length board))
-                      )
-
-                    )
-                    (get_all_diagonal_starts (cdr board))
+                      (get_first_row_positions board)
+                      (get_first_column_positions board)
               )
               :test #'equal
 
