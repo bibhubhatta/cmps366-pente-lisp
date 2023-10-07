@@ -792,6 +792,94 @@
         )
 )
 
+(terpri)
+(terpri)
+
+(print "Testing make_move with the second move of the initial state")
+(terpri)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_board
+                (
+                  make_move
+                    (
+                      make_move
+                        (
+                          get_initial_state
+                        )
+                        "J10"
+                    )
+                    "J9"
+                )
+            )
+        )
+)
+
+(terpri)
+(terpri)
+
+(print "Testing make_move with the third move of the initial state")
+(terpri)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_board
+                (
+                  make_move
+                    (
+                      make_move
+                        (
+                          make_move
+                            (
+                              get_initial_state
+                            )
+                            "J10"
+                        )
+                        "J9"
+                    )
+                    "J11"
+                )
+            )
+        )
+)
+
+; Print available moves for the third move
+(
+  print (sort
+              (get_available_moves
+                   
+                        ( get_board
+                          (
+                          make_move
+                            (
+                              make_move
+                                (
+                                  get_initial_state
+                                )
+                                "J10"
+                            )
+                            "J9"
+                        )
+                      )
+            
+              )
+        #'string<
+        
+        )
+)
+
+(terpri)
+(terpri)
+
+
+
 
 
 (print "Printing board from case 4 for testing")

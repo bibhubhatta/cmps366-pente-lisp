@@ -1255,6 +1255,29 @@
            ) 
             (list (get_center board))
           )
+
+          ; third move, i.e. second move of the first player
+          (
+            (equalp 
+                    (+
+                        (get_no_stones_on_board board 'W)
+                        (get_no_stones_on_board board 'B)
+                    )           
+                    2
+            )
+
+            ; filter out available moves whose distance is less
+            ; than 3 from the center
+            (remove-if-not
+                #'(lambda (move)
+                    (>= (get_distance move (get_center board)) 3)
+                  )
+                (get_empty_positions board)
+            ) 
+          )
+
+          ; otherwise, return all the empty positions
+          (t (get_empty_positions board))
   )
 )
 
