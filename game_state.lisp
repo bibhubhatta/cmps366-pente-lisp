@@ -161,6 +161,19 @@
   (nth 5 game_state)
 )
 
+
+;;; *********************************************
+;;; Name   : get_current_stone
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the current stone
+;;; Return : The current stone -- W or B
+;;; *********************************************
+(defun get_current_stone (game_state)
+  (nth 6 game_state)
+)
+
 ;;; *********************************************
 ;;; Name   : replace_nth
 ;;; Args   : n, new, list
@@ -266,6 +279,45 @@
     ; always starts first
     'White
 
+
+  )
+
+)
+
+(defun make_move (game_state move)
+
+  (cond 
+  
+      (
+        ; if the move is valid
+        (member move (get_available_moves (get_board game_state)) :test #'string=)
+
+        (
+          ; switch the turn
+          switch_turn
+            ( 
+              
+                ; update the game state with the new board
+                set_board game_state
+                    (
+                      ; set the stone on the board
+                      set_stone (get_board game_state) move (get_current_stone game_state)
+                    )      
+              
+            )
+        
+        )
+      
+      
+      )
+
+      (
+        ; if the move is invalid
+        t
+        (format t "Invalid move!~%")
+        ;return the same game state
+        game_state
+      )
 
   )
 

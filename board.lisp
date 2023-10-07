@@ -682,26 +682,39 @@
 ;;; Return : The board -- a list of lists
 ;;; *********************************************
 (defun set_stone (board position stone)
+
+  ; make the function compatible if it is called
+  ; with full words instead of single letters
+  ; for the stone
+  (cond 
+      ((equal stone 'white) (set_stone board position 'W))
+      ((equal stone 'black) (set_stone board position 'B))
+      ((equal stone 'empty) (set_stone board position 'O))
   
-  (
+      (t
+  
+  
+            (
+              ; get the row and replace the the stone at the position
+              ; in the row
+              
+                replace_row 
 
-    ; get the row and replace the the stone at the position
-    ; in the row
-    
-      replace_row 
+                            board
+                            (row_number_from_position position)
 
-                  board
-                  (row_number_from_position position)
-
-                  (
-                    replace_stone_in_row
-                    (get_row board (row_number_from_position position))
-                    (column_char_from_position position)
-                    stone
-                  )      
+                            (
+                              replace_stone_in_row
+                              (get_row board (row_number_from_position position))
+                              (column_char_from_position position)
+                              stone
+                            )      
+            )
+      )
   )
-
 )
+
+
 
 ;;; *********************************************
 ;;; Name   : convert_to_sequences

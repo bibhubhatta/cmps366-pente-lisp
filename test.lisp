@@ -746,6 +746,53 @@
         ) 
 )
 
+(terpri)
+(terpri)
+
+(print "Testing make_move with the first move of the initial state")
+(terpri)
+; (trace make_move)
+; (trace get_available_moves)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_board
+                (
+                  make_move
+                    (
+                      get_initial_state
+                    )
+                    "J10"
+                )
+            )
+        )
+)
+
+(terpri)
+(print "Testing make_move with an invalid move for the initial state")
+(terpri)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_board
+                (
+                  make_move
+                    (
+                      get_initial_state
+                    )
+                    "A1"
+                )
+            )
+        )
+)
+
+
 
 (print "Printing board from case 4 for testing")
 (terpri)
