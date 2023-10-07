@@ -66,6 +66,30 @@
 
 )
 
+
+;;; *********************************************
+;;; Name   : get_player_from_stone
+;;; Args   : game_state, stone
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the player that is playing the stone
+;;; Return : The player -- Human or Computer or nil if the stone
+;;;         is invalid
+;;; *********************************************
+(defun get_player_from_stone (game_state stone)
+    
+    (cond
+        ; if the stone is provided as a full word
+        ((equal stone (nth 6 game_state)) (nth 5 game_state))
+        ((equal (other_stone stone) (nth 6 game_state)) (other_player (nth 5 game_state)))
+
+        ; if the stone is provided as a single character
+        ((equal stone 'W) (get_player_from_stone game_state 'White))
+        ((equal stone 'B) (get_player_from_stone game_state 'Black))
+    )
+)
+
+
 ;;;; ******************************************************************
 ;;;; End of game state related functions
 ;;;; ******************************************************************

@@ -401,6 +401,64 @@
 (terpri)
 (terpri)
 
+(print "Testing get_player_from_stone with cases 3 and 4")
+(terpri)
+
+; (trace get_player_from_stone)
+
+
+(format 
+      t
+      "Player of white stone in case 3: ~a~%"
+      (
+        get_player_from_stone
+          (
+            case_3
+          )
+          'W
+      )
+)
+
+
+(format 
+      t
+      "Player of black stone in case 3: ~a~%"
+      (
+        get_player_from_stone
+          (
+            case_3
+          )
+          'B
+      )
+)
+
+(format 
+      t
+      "Player of white stone in case 4: ~a~%"
+      (
+        get_player_from_stone
+          (
+            case_4
+          )
+          'W
+      )
+)
+
+(format 
+      t
+      "Player of black stone in case 4: ~a~%"
+      (
+        get_player_from_stone
+          (
+            case_4
+          )
+          'B
+      )
+)
+
+(terpri)
+(terpri)
+
 
 (print "Printing board from case 4 for testing")
 (terpri)
