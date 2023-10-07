@@ -161,7 +161,83 @@
   (nth 5 game_state)
 )
 
+;;; *********************************************
+;;; Name   : replace_nth
+;;; Args   : n, new, list
+;;;          n is the index of the element to be replaced
+;;;          new is the new element
+;;;          list is the list
+;;; Purpose: Replace the nth element of the list with the new element
+;;; Return : The new list
+;;; *********************************************
+(defun replace_nth (n new list)
+  (cond
+    ((equal n 0) (cons new (cdr list)))
+    (t (cons (car list) (replace_nth (- n 1) new (cdr list))))
+  )
+)
+
+;;; *********************************************
+;;; Name   : switch_player
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Switch the player of the game state
+;;; Return : The new game state
+;;; *********************************************
+(defun switch_player (game_state)
+
+  (replace_nth
+                 5 ; index of the current player
+                 (other_player (nth 5 game_state))
+                 game_state
+  )
+
+)
+
+;;; *********************************************
+;;; Name   : switch_stone
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Switch the stone of the game state
+;;; Return : The new game state
+;;; *********************************************
+(defun switch_stone (game_state)
+
+  (replace_nth
+                 6 ; index of the current stone
+                 (other_stone (nth 6 game_state))
+                 game_state
+  )
+
+)
+
+
+;;; *********************************************
+;;; Name   : switch_turn
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Switch the turn of the game state
+;;; Return : The new game state
+;;; *********************************************
+(defun switch_turn (game_state)
+
+  (
+    switch_player
+          (
+            switch_stone game_state
+          )
+  )
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of game state related functions
 ;;;; ******************************************************************
+
+
+
+

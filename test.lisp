@@ -603,7 +603,24 @@
 )
 
 
+(terpri)
+(terpri)
 
+(print "Testing swtich_stone with case 3 and 4")
+
+
+(print "Case 3")
+(print (case_3))
+(print (switch_turn (case_3)))
+
+(terpri)
+
+(print "Case 4")
+(print (case_4))
+(print (switch_turn (case_4)))
+
+(terpri)
+(terpri)
 
 (print "Printing board from case 4 for testing")
 (terpri)
