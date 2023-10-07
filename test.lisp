@@ -459,6 +459,38 @@
 (terpri)
 (terpri)
 
+(print "Testing get_score with case 4")
+(terpri)
+
+; (trace get_score)
+
+(format
+      t
+      "Human's score in case 4: ~a~%"
+      (
+        get_score
+          (
+            case_4
+          )
+          'human
+      )
+)
+
+(format
+      t
+      "Computer's score in case 4: ~a~%"
+      (
+        get_score
+          (
+            case_4
+          )
+          'computer
+      )
+)
+
+(terpri)
+(terpri) 
+
 
 (print "Printing board from case 4 for testing")
 (terpri)
