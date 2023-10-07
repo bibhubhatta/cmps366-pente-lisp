@@ -727,6 +727,13 @@
 (terpri)
 (terpri)
 
+(print "Testing get_center")
+(terpri)
+
+(
+  print (get_center (get_empty_board 19 19))
+)
+
 
 (print "Printing board from case 4 for testing")
 (terpri)

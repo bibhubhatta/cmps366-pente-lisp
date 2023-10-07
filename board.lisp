@@ -1175,6 +1175,60 @@
   )
 )
 
+
+;;; *********************************************
+;;; Name   : get_board_shape
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the shape of the board
+;;; Return : The shape -- a list containing the
+;;;          number of rows and columns
+(defun get_board_shape (board)
+  (list (length board) (length (car board)))
+)
+
+;;; *********************************************
+;;; Name   : get_no_rows
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the number of rows of the board
+;;; Return : The number of rows
+;;; *********************************************
+(defun get_no_rows (board)
+  (length board)
+)
+
+;;; *********************************************
+;;; Name   : get_no_columns
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the number of columns of the board
+;;; Return : The number of columns
+;;; *********************************************
+(defun get_no_columns (board)
+  (length (car board))
+)
+
+;;; *********************************************
+;;; Name   : get_center
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the center position of the board
+;;; Return : The center position -- a string
+;;; *********************************************
+(defun get_center (board)
+  (format nil "~a~a" 
+          ; Using ceiling instead of / so that it also 
+          ; works for board with even number of rows/columns
+          (code-char (+ 64 (ceiling (+ 1 (get_no_columns board)) 2)))
+          (write-to-string (ceiling (+ 1 (get_no_rows board)) 2))
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
