@@ -104,7 +104,35 @@
   )
 )
 
+;;; *********************************************
+;;; Name   : is_stone
+;;; Args   : stone
+;;;          stone is the stone to check
+;;; Purpose: Check if the argument is a stone
+;;; Return : t if the argument is a stone, nil otherwise
+;;; *********************************************
+(defun is_stone (stone)
+  (or (equal stone 'W) (equal stone 'B) (equal stone 'White) (equal stone 'Black))
+)
 
+;;; *********************************************
+;;; Name   : get_no_captures
+;;; Args   : game_state, player
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the number of captures of the player
+;;; Return : The number of captures -- a number
+;;; *********************************************
+
+(defun get_no_captures (game_state player)
+  (cond
+    ((equal player 'Human) (nth 1 game_state))
+    ((equal player 'Computer) (nth 3 game_state))
+
+    ; if the stone is supplied instead of the player
+    ((is_stone player) (get_no_captures game_state (get_player_from_stone game_state player)))
+  )
+)
 
 
 ;;;; ******************************************************************

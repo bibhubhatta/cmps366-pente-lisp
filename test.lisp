@@ -492,6 +492,66 @@
 (terpri) 
 
 
+(print "Testing get_no_captures with case 4")
+(terpri)
+
+; (trace get_no_captures)
+
+(format
+      t
+      "Human's number of captures in case 4: ~a~%"
+      (
+        get_no_captures
+          (
+            case_4
+          )
+          'human
+      )
+)
+
+(format
+      t
+      "Computer's number of captures in case 4: ~a~%"
+      (
+        get_no_captures
+          (
+            case_4
+          )
+          'computer
+      )
+)
+
+(format
+  t
+  "White's number of captures in case 4: ~a~%"
+  (
+    get_no_captures
+      (
+        case_4
+      )
+      'W
+  )
+)
+
+
+(format
+  t
+  "Black's number of captures in case 4: ~a~%"
+  (
+    get_no_captures
+        (
+          case_4
+        )
+
+        'B
+  )
+
+)
+
+(terpri)
+(terpri)
+
+
 (print "Printing board from case 4 for testing")
 (terpri)
 
