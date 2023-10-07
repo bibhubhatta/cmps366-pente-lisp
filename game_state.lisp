@@ -134,6 +134,20 @@
   )
 )
 
+;;; *********************************************
+;;; Name   : set_board
+;;; Args   : game_state, board
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Set the board of the game state
+;;;          to the board supplied
+;;;          This will be used to updated the board
+;;;          after a move is made
+;;; Return : The new game state
+;;; *********************************************
+(defun set_board (game_state board)
+  (cons board (cdr game_state))  
+)
 
 ;;;; ******************************************************************
 ;;;; End of game state related functions

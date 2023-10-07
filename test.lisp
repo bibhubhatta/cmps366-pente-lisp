@@ -551,6 +551,36 @@
 (terpri)
 (terpri)
 
+(print "Testing set_board with case 4")
+(terpri)
+(terpri)
+
+(
+  print_board
+      (
+        cartesian_board
+              (
+                get_board
+                      (
+                        set_board
+                        (case_4)
+                        (
+                          set_stone
+                            (
+                              get_board (case_4)
+                            )
+
+                            "A1"
+                            'P
+                        )
+                      )
+              )
+      )
+)
+
+
+
+
 
 (print "Printing board from case 4 for testing")
 (terpri)
