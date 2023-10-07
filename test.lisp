@@ -578,6 +578,29 @@
       )
 )
 
+(terpri)
+(terpri)
+
+(print "Testing get_current_player with case 3 and 4")
+
+(format 
+      t
+      "Current player for case 4: ~a~%"
+      (
+        get_current_player 
+
+        (case_4)
+      )
+)
+(format 
+      t
+      "Current player for case 3: ~a~%"
+      (
+        get_current_player 
+
+        (case_3)
+      )
+)
 
 
 

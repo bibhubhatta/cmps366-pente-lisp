@@ -149,6 +149,19 @@
   (cons board (cdr game_state))  
 )
 
+;;; *********************************************
+;;; Name   : get_current_player
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the current player
+;;; Return : The current player -- Human or Computer
+;;; *********************************************
+(defun get_current_player (game_state)
+  (nth 5 game_state)
+)
+
+
 ;;;; ******************************************************************
 ;;;; End of game state related functions
 ;;;; ******************************************************************
