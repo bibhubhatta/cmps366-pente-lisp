@@ -699,6 +699,35 @@
 (terpri)
 (terpri)
 
+(print "Testing get_empty_board with 19 rows and 19 columns")
+(terpri)
+
+(
+  print_board
+        (
+          cartesian_board
+            (
+              get_empty_board
+                19
+                19
+            )
+        )
+)
+
+(terpri)
+(terpri)
+
+(print "Testing get_initial_state")
+(terpri)
+
+(
+  print (get_initial_state)
+) 
+
+(terpri)
+(terpri)
+
+
 (print "Printing board from case 4 for testing")
 (terpri)
 

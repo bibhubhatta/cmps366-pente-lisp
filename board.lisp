@@ -1142,6 +1142,39 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_empty_board
+;;; Args   : no_rows, no_column
+;;;          no_rows is the number of rows of the board
+;;;          no_column is the number of columns of the board
+;;; Purpose: Get an empty board
+;;; Return : The empty board -- a list of lists
+;;; *********************************************
+(defun get_empty_board (no_rows no_column)
+  (
+    cond
+        ((<= no_rows 0) nil)
+        (t (cons (get_empty_row no_column) (get_empty_board (- no_rows 1) no_column)))
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : get_empty_row
+;;; Args   : no_columns
+;;;          no_columns is the number of columns of the board
+;;; Purpose: Get an empty row
+;;; Return : The empty row -- a list
+;;; *********************************************
+
+(defun get_empty_row (no_columns)
+  (
+    cond
+        ((<= no_columns 0) nil)
+        (t (cons 'O (get_empty_row (- no_columns 1))))
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************

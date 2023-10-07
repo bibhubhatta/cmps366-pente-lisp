@@ -234,6 +234,44 @@
 )
 
 
+;;; *********************************************
+;;; Name   : get_initial_state
+;;; Purpose: Get the initial game state
+;;; Return : The initial game state
+;;; *********************************************
+(defun get_initial_state ()
+
+  (list
+
+    ; empty board
+    (get_empty_board 19 19)
+
+    ; no captures for human
+    0
+
+    ; human score
+    0
+
+    ; no captures for computer
+    0
+
+    ; computer score
+    0
+
+    ; current player is nil because it is yet
+    ; to be decided
+    nil
+
+    ; current stone is white because white
+    ; always starts first
+    'White
+
+
+  )
+
+)
+
+
 ;;;; ******************************************************************
 ;;;; End of game state related functions
 ;;;; ******************************************************************
