@@ -734,6 +734,18 @@
   print (get_center (get_empty_board 19 19))
 )
 
+(terpri)
+(terpri)
+
+(print "Testing get_available_moves with the initial state")
+(terpri)
+
+(
+  print (get_available_moves
+                   (get_board (get_initial_state))
+        ) 
+)
+
 
 (print "Printing board from case 4 for testing")
 (terpri)

@@ -1229,6 +1229,22 @@
   )
 )
 
+(defun get_available_moves (board)
+  (cond
+          ; first move
+          (
+            (equalp 
+                    (+
+                        (get_no_stones_on_board board 'W)
+                        (get_no_stones_on_board board 'B)
+                    )           
+                    0
+           ) 
+            (list (get_center board))
+          )
+  )
+)
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
 ;;;; ******************************************************************
