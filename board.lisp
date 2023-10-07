@@ -549,6 +549,18 @@
   (char-upcase (char (subseq position 0 1) 0))
 )
 
+;;; *********************************************
+;;; Name   : column_number_from_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the column number from the position
+;;; Return : The column number
+;;; *********************************************
+(defun column_number_from_position (position)
+  (- (char-code (column_char_from_position position)) 64)
+)
+
 
 ;;; *********************************************
 ;;; Name   : get_stone
@@ -1109,6 +1121,25 @@
       )
     )
   
+)
+
+;;; *********************************************
+;;; Name   : get_distance
+;;; Args   : position_1, position_2
+;;;          position_1 is a string that represents
+;;;          the position of the stone in the board
+;;;          position_2 is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the distance between two positions
+;;; Return : The distance -- a number
+;;; *********************************************
+(defun get_distance (postion_1 position_2)
+
+  (max
+      (abs (- (row_number_from_position postion_1) (row_number_from_position position_2)))
+      (abs (- (column_number_from_position postion_1) (column_number_from_position position_2)))
+  )
+
 )
 
 ;;;; ******************************************************************

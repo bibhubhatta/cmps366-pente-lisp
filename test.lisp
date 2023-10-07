@@ -622,6 +622,83 @@
 (terpri)
 (terpri)
 
+(print "Testing get_distance -- 0 distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between A1 and A1: ~a~%"
+        (
+          get_distance
+            "A1"
+            "A1"
+        )
+)
+
+(print "Testing get_distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between A1 and A2: ~a~%"
+        (
+          get_distance
+            "A1"
+            "A2"
+        )
+)
+(print "Testing get_distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between a1 and b2: ~a~%"
+        (
+          get_distance
+            "A1"
+            "b2"
+        )
+)
+(print "Testing get_distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between j10 and m8: ~a~%"
+        (
+          get_distance
+            "j10"
+            "M8"
+        )
+)
+(print "Testing get_distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between A1 and S19: ~a~%"
+        (
+          get_distance
+            "A1"
+            "S19"
+        )
+)
+(print "Testing get_distance")
+(terpri)
+(
+  format 
+        t
+        "Distance between A1 and d3: ~a~%"
+        (
+          get_distance
+            "A1"
+            "d3"
+        )
+)
+
+(terpri)
+(terpri)
+
 (print "Printing board from case 4 for testing")
 (terpri)
 
