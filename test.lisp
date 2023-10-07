@@ -468,7 +468,7 @@
       t
       "Human's score in case 4: ~a~%"
       (
-        get_score
+        get_tournament_score
           (
             case_4
           )
@@ -480,7 +480,7 @@
       t
       "Computer's score in case 4: ~a~%"
       (
-        get_score
+        get_tournament_score
           (
             case_4
           )
