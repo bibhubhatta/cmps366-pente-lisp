@@ -1,6 +1,7 @@
 (load "board.lisp")
 (load "serials.lisp")
 (load "game_state.lisp")
+(load "file_handling.lisp")
 
 
 (
@@ -898,5 +899,47 @@
         )
 )
 
+(terpri)
+(terpri)
+
+(print "Testing print_game_state")
+(terpri)
+
+(
+  print_game_state
+        (
+          case_4
+        )
+)
+
+(terpri)
+(terpri)
+
+(print "Testing save_game_to_file")
+(terpri)
+
+(
+  save_game_to_file
+        (
+          case_4
+        )
+        "case_4.txt"
+)
 
 
+
+(terpri)
+(terpri)
+
+(print "Testing save_game_to_user_location")
+(terpri)
+
+(
+  save_game_to_user_location
+        (
+          case_4
+        )
+)
+
+(terpri)
+(terpri)
