@@ -1,151 +1,25 @@
+(load "file_handling.lisp")
+
 ;;;; ******************************************************************
 ;;;; Serialization lists
 ;;;; Used for debugging and final demo
 ;;;; ******************************************************************
 
 (defun case_1 ()
-  '(
-      ; Board:
-      (
-      ( O O O O O O O O O O O O B O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O W O O O O O O O O O O O O O O O O )
-      ( O O W O O O O O O O O O O O O O O O O )
-      ( O O B O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O W W B O O O O O O )
-      ( O O O O O O O O O W O O O O O O O O O )
-      ( O O O O O O O O O W O O O O O O O O O )
-      ( O O O O O O O B O B O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O B O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O B O O O O O O O O O O O O O O O O )
-      ( O O W O O O O O O O O O O O O O O O O )
-      ( O O W O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      )
-
-      ; Human
-      0 0
-
-      ; Computer
-      0 0
-
-      ; Next player
-      Human Black
-  ) 
+  (load_game_state_from_file "serials/case_1.txt")
 )
 
 
 (defun case_2 ()
-  '(
-      ; Board:
-      (
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O W W B O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O B O O O O )
-      ( O O O O O B O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O B O O O O O O O )
-      ( O O O O O O O O O O W O O O O O O O O )
-      ( O O O O O O O O O W O O O O O O O O O )
-      ( O O O O O O W W O O O O O O O O O O O )
-      ( O O O O O O O O O W O O O O O O O O O )
-      ( O O O O O O O O O O W O O O O O O O O )
-      ( O O B O O O O O O O O B O O O O O O O )
-      ( O O O O O B O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O B O O O )
-      ( O O O W W B O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      )
-
-      ; Human
-      0 0
-
-      ; Computer
-      0 0
-
-      ; Next player
-      Computer Black   
-  )
+  (load_game_state_from_file "serials/case_2.txt")
 )
 
 ( defun case_3 ()
-  '(
-    ; Board:
-    (
-      ( O O O W W B O O O O O O O O O O O O O )
-      ( O O W O O B O O O O O O O B B O O O O )
-      ( O O W O O O O O O O O O O O O O O O O )
-      ( O O B O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O B O O O O O )
-      ( O O O W O O O O O O O O O O O O O O O )
-      ( O O O O W O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O W O O O O O O O O O O O O )
-      ( O O O O O O O W O W O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O B B O O B B O O O O O O O O )
-      ( O O O O O W O O O O O O O O O O O O O )
-      ( O O O O O W O O O O O O O O B O O O O )
-      ( O O B W W O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-    )
-
-    ; Human
-    1 0
-
-    ; Computer
-    0 0
-
-    ; Next player
-    Human Black
-  )
+  (load_game_state_from_file "serials/case_3.txt")
 )
 
 (defun case_4 ()
-  '(
-    ; Board:
-    (
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O B B O O O O O O O O O O O O O O )
-      ( O O O B O B O O O O O O O O O O O O O )
-      ( O O O W O O W O O O O O O O O O O O O )
-      ( O O O O O B O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O W O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O W O O O O O O O O O )
-      ( O O O O O O O O W O O O O O O O O O O )
-      ( O O O O O O O W O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O O O O O )
-      ( O O O O O O O O O O O O O O O B O O O )
-      ( O O O O O O O O O O O O O O O B O O O )
-      ( O O O O W W B O O O O O O O O O O O O )
-      ( O O O W O O O O O O O O O O O O O O O )
-      ( O O O W O O O O O O O O O O O O O O O )
-      ( O O O B O O O O O O O O O O O O O O O )
-    )
-
-    ; Human
-    3 6
-
-    ; Computer
-    0 2
-
-    ; Next player
-    Computer White
-  )
+  (load_game_state_from_file "serials/case_4.txt")
 )
 
 ;;;; ******************************************************************
