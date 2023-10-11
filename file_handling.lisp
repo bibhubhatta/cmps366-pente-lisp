@@ -73,6 +73,24 @@
   ) 
 )
 
+;;; *********************************************
+;;; Name   : load_game_state_from_file
+;;; Args   : file_name
+;;;          file_name is the name of the file to
+;;;          load the game from
+;;; Purpose: Load the game from a file
+;;; Return : game_state
+;;; *********************************************
+(defun load_game_state_from_file (file_name)
+    (with-open-file 
+    
+      (stream file_name :direction :input :if-does-not-exist :error)
+    
+      (read stream)
+    
+    )
+)
+
 ;;;; ******************************************************************
 ;;;; End of File Handling Functions
 ;;;; ******************************************************************

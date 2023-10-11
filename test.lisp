@@ -931,15 +931,28 @@
 (terpri)
 (terpri)
 
-(print "Testing save_game_to_user_location")
-(terpri)
+; Commented because we don't want to ask
+; for input every time we run the file
+; (print "Testing save_game_to_user_location")
+; (terpri)
+
+; (
+;   save_game_to_user_location
+;         (
+;           case_4
+;         )
+; )
+
+; (terpri)
+; (terpri)
+
+(print "Testing load_game_state_from_file")
 
 (
-  save_game_to_user_location
+  print_game_state
         (
-          case_4
+          load_game_state_from_file
+            "case_4.txt"
         )
 )
 
-(terpri)
-(terpri)
