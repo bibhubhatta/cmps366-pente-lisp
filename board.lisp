@@ -1119,20 +1119,32 @@
 ;;; *********************************************
 (defun get_all_stone_sequences (board stone)
 
-    ; filter the stone sequences to get only the sequences
-    ; that contain the stone
-    (remove-if-not
-      
-      #'(lambda (stone_sequence)
-          (member stone stone_sequence)
-        )
 
-      (
-        convert_board_sequences_to_stone_sequences 
-        board 
-        (get_all_board_sequences board)
-      )
+    ; check if stone is using the full word
+    ; instead of the single letter
+    (cond 
+        ((equal stone 'white) (get_all_stone_sequences board 'W))
+        ((equal stone 'black) (get_all_stone_sequences board 'B))
+        ((equal stone 'empty) (get_all_stone_sequences board 'O))
+
+        (t
+            ; filter the stone sequences to get only the sequences
+            ; that contain the stone
+            (remove-if-not
+              
+              #'(lambda (stone_sequence)
+                  (equal (list stone) (remove-duplicates stone_sequence :test #'equal))
+                )
+
+              (
+                convert_board_sequences_to_stone_sequences 
+                board 
+                (get_all_board_sequences board)
+              )
+            )
+        )
     )
+
   
 )
 
@@ -1279,6 +1291,67 @@
           ; otherwise, return all the empty positions
           (t (get_empty_positions board))
   )
+)
+
+;;; *********************************************
+;;; Name   : get_sequence_score
+;;; Args   : board, stone
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          stone is the stone to be checked
+;;;          it is either O, W, or B
+;;; Purpose: Get the score of the stone sequences
+;;; Return : The score -- a number
+;;; *********************************************
+(
+  defun get_sequence_score (board stone)
+    
+    (cond 
+
+      ; if the stone is using the full word instead of the single letter
+      ; then get the score of the stone sequences of the single letter
+      ((equal stone 'white) (get_sequence_score board 'W))
+      ((equal stone 'black) (get_sequence_score board 'B))
+      ((equal stone 'empty) (get_sequence_score board 'O))
+
+      (t
+          (
+            +
+            ; Score for sequences of length 5 or more
+            (
+              *
+            ; number of sequences of length 5 or more
+            ( 
+                length
+                      (
+                        remove-if-not
+                          #'(lambda (sequence)
+                              (>= (length sequence) 5)
+                            )
+                          (get_all_stone_sequences board stone)
+                      )
+              )
+
+              5
+            )
+
+
+            ; Score for sequences of length 4
+            (
+              ; number of sequences of length 4
+                length
+                      (
+                        remove-if-not
+                          #'(lambda (sequence)
+                              (= (length sequence) 4)
+                            )
+                          (get_all_stone_sequences board stone)
+                      )
+            )
+            
+          )
+        )
+    )
 )
 
 ;;;; ******************************************************************

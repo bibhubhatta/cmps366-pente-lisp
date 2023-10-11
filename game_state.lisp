@@ -323,6 +323,174 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_winner
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the winner of the game
+;;; Return : The winner -- Human or Computer or nil if the game
+;;;          is not over
+;;; *********************************************
+(defun get_winner (game_state)
+  
+  (cond
+    ; check captures
+
+    (
+      (
+        >= 
+        (get_no_captures game_state 'Human)
+        5
+      )
+      'Human
+    )
+
+    (
+      (
+        >= 
+        (get_no_captures game_state 'Computer)
+        5
+      )
+      'Computer
+    )
+
+    ; check if there is a sequence equal or longer
+    ; than 5
+
+    (
+      ( >=
+        ( 
+          length
+                (
+                  remove-if-not
+                    #'(lambda (sequence)
+                        (>= (length sequence) 5)
+                      )
+                      
+                      (get_all_stone_sequences 
+                            (get_board game_state)
+                            (get_stone_from_player game_state 'Human)
+                      )
+                )
+        )
+        1
+      )
+      'Human
+    )
+
+    (
+      ( >=
+        ( 
+          length
+                (
+                  remove-if-not
+                    #'(lambda (sequence)
+                        (>= (length sequence) 5)
+                      )
+
+                      (get_all_stone_sequences 
+                            (get_board game_state)
+                            (get_stone_from_player game_state 'Human)
+                      )
+                )
+        )
+        1
+      )
+      'Computer
+    )
+    
+    (t nil)
+  )
+
+
+)
+
+;;; *********************************************
+;;; Name   : is_game_drawn
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Check if the game is drawn
+;;; Return : t if the game is drawn, nil otherwise
+;;; *********************************************
+
+(defun is_game_drawn (game_state)
+  (cond
+    (
+      ; if there are no available moves
+      (null (get_available_moves (get_board game_state)))
+      t
+    )
+
+    (t nil)
+
+  )
+)
+
+;;; *********************************************
+;;; Name   : is_game_over
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Check if the game is over
+;;; Return : t if the game is over, nil otherwise
+;;; *********************************************
+
+(defun is_game_over (game_state)
+  
+    (or
+      (get_winner game_state)
+      (is_game_drawn game_state)
+    )
+)
+
+;;; *********************************************
+;;; Name   : get_round_score
+;;; Args   : game_state, player
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the score of the player
+;;; Return : The score -- a number
+;;; *********************************************
+(
+  defun get_round_score (game_state player)
+    (
+      +
+      (
+        get_sequence_score (get_board game_state) (get_stone_from_player game_state player)
+      )
+      (
+        get_no_captures game_state player
+      )
+    )
+)
+
+
+;;; *********************************************
+;;; Name   : print_game_state
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Display the game state
+;;; Return : nil
+;;; *********************************************
+(defun print_game_state (game_state)
+
+  (format t "~%")
+  (format t "Board:~%")
+  (print_board (cartesian_board (get_board game_state)))
+  (format t "~%")
+  (format t "Human captures: ~a~%" (get_no_captures game_state 'Human))
+  (format t "Computer captures: ~a~%" (get_no_captures game_state 'Computer))
+  (format t "Human score: ~a~%" (get_round_score game_state 'Human))
+  (format t "Computer score: ~a~%" (get_round_score game_state 'Computer))
+  (format t "Current player: ~a~%" (get_current_player game_state))
+  (format t "Current stone: ~a~%" (get_current_stone game_state))
+  (format t "~%")
+
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of game state related functions
