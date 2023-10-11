@@ -1,0 +1,33 @@
+(
+    ; Board:
+    (
+      ( O O O W W B O O O O O O O O O O O O O )
+      ( O O W O O B O O O O O O O B B O O O O )
+      ( O O W O O O O O O O O O O O O O O O O )
+      ( O O B O O O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O B O O O O O )
+      ( O O O W O O O O O O O O O O O O O O O )
+      ( O O O O W O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+      ( O O O O O O W O O O O O O O O O O O O )
+      ( O O O O O O O W O W O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+      ( O O O O O B B O O B B O O O O O O O O )
+      ( O O O O O W O O O O O O O O O O O O O )
+      ( O O O O O W O O O O O O O O B O O O O )
+      ( O O B W W O O O O O O O O O O O O O O )
+      ( O O O O O O O O O O O O O O O O O O O )
+    )
+
+    ; Human
+    1 0
+
+    ; Computer
+    0 0
+
+    ; Next player
+    Human Black
+)
