@@ -956,3 +956,19 @@
         )
 )
 
+
+(terpri)
+(terpri)
+
+(print "Testing load_game_state_from_user_location")
+(terpri)
+
+(
+  print_game_state
+        (
+          load_game_state_from_user_location
+        )
+)
+
+(terpri)
+(terpri)

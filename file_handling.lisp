@@ -1,3 +1,5 @@
+(load "game_state.lisp")
+
 ;;;; ******************************************************************
 ;;;; File Handling Functions
 ;;;; Used for reading from and writing to files
@@ -89,6 +91,57 @@
       (read stream)
     
     )
+)
+
+;;; *********************************************
+;;; Name   : load_game_from_user_location
+;;; Args   : none
+;;; Purpose: Load the game from a file
+;;; Return : game_state
+;;; *********************************************
+(defun load_game_state_from_user_location ()
+
+  (princ "Enter the name of the file you want to load the game from: ")
+  ; without terpri, the input prompt
+  ; is not displayed until the user enters a name
+  (terpri)
+
+  (let*  
+      
+      ((file_name (read-line)) )
+
+      (handler-case
+
+          
+          (print_game_state (load_game_state_from_file file_name))
+
+          (error (condition)
+            (princ "Error loading game state from file: ")
+            (princ file_name)
+            (terpri)
+            (princ "Error message: ")
+            (princ condition)
+            (terpri)
+
+            (princ "Try again")
+            (terpri)
+            (load_game_state_from_user_location)
+          )
+
+          (:no-error (condition)
+            (princ "Game state loaded from file: ")
+            (princ file_name)
+            (terpri)
+            
+            ; because we are printing the game state
+            ; to check if it is correct, we need to
+            ; load it again
+           (load_game_state_from_file file_name)
+          )
+      )
+
+  )
+
 )
 
 ;;;; ******************************************************************
