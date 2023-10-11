@@ -135,6 +135,24 @@
 )
 
 ;;; *********************************************
+;;; Name   : set_no_captures
+;;; Args   : game_state, player, no_captures
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Set the number of captures of the player
+;;; Return : The new game state
+;;; *********************************************
+(defun set_no_captures (game_state player no_captures)
+  (cond
+    ((equal player 'Human) (replace_nth 1 no_captures game_state))
+    ((equal player 'Computer) (replace_nth 3 no_captures game_state))
+
+    ; if the stone is supplied instead of the player
+    ((is_stone player) (set_no_captures game_state (get_player_from_stone game_state player) no_captures))
+  )
+)
+
+;;; *********************************************
 ;;; Name   : set_board
 ;;; Args   : game_state, board
 ;;;          game_state is the game state like
@@ -516,6 +534,103 @@
     ((equal player 'Human) (nth 2 game_state))
     ((equal player 'Computer) (nth 4 game_state))
   )
+)
+
+;;; *********************************************
+;;; Name   : set_tournament_score
+;;; Args   : game_state, player, score
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Set the score of the player
+;;; Return : The new game state
+;;; *********************************************
+(defun set_tournament_score (game_state player score)
+  (cond
+    ((equal player 'Human) (replace_nth 2 score game_state))
+    ((equal player 'Computer) (replace_nth 4 score game_state))
+  )
+)
+
+;;; *********************************************
+;;; Name   : update_tournament_score
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Update the tournament score of both
+;;;          players if the game is over
+;;; Return : The new game state
+;;; *********************************************
+(defun update_tournament_score (game_state)
+
+  (cond
+        (
+          ; if the game is over, update the score
+          ; of both players
+          (get_winner game_state)
+          
+          (
+            ; update the computer score
+            set_tournament_score
+              (
+                ;update the human score
+                set_tournament_score
+                  game_state
+                  'Human
+                  (
+                    +
+                    (get_tournament_score game_state 'Human)
+                    (get_round_score game_state 'Human)
+                  )
+              )
+              'Computer
+              (
+                +
+                (get_tournament_score game_state 'Computer)
+                (get_round_score game_state 'Computer)
+              )
+          )
+        )
+
+  )
+
+)
+
+;;; *********************************************
+;;; Name   : initialize_round
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Initialize the game state for a new round
+;;; Return : The new game state
+;;; *********************************************
+(defun initialize_round (game_state)
+
+  
+ (set_current_player
+    
+    ; set new board
+    (set_board
+
+      ; set both captures to 0
+      (
+        set_no_captures
+          (
+            set_no_captures
+              game_state
+              'Human
+              0
+          )
+          'Computer
+          0
+      )
+
+      (get_empty_board 19 19)
+    )
+    
+    nil
+  
+)
+
 )
 
 ;;;; ******************************************************************

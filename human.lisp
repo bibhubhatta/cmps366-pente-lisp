@@ -126,6 +126,87 @@
     )
 )
 
+;;; *********************************************
+;;; Name   : human_wants_to_play_again
+;;; Args   : None
+;;; Purpose: Ask the human if they want to play
+;;;          again
+;;; Return : t if human wants to play again, nil
+;;;          otherwise
+;;; *********************************************
+(defun human_wants_to_play_again ()
+    (princ "Do you want to play again? (y/n): ")
+    (terpri)
+
+    (let*
+        (
+            (human_choice (read-line))
+        )
+
+        (cond 
+
+            ; if the inputs are invalid, then try again
+            (
+                (not (member (string-upcase human_choice) '("Y" "N") :test #'string=))
+                (princ "Invalid input. Please try again.")
+                (terpri)
+                (human_wants_to_play_again)
+            )
+
+            (
+                (equal (string-upcase human_choice) "Y")
+                t
+            )
+
+            (
+                (equal (string-upcase human_choice) "N")
+                nil
+            )
+        )
+    )
+)
+
+
+;;;; ******************************************************************
+;;;; Name   : human_wants_to_load_game
+;;;; Args   : None
+;;;; Purpose: Ask the human if they want to load
+;;;;          a game
+;;;; Return : t if human wants to load a game, nil
+;;;;          otherwise
+;;;; ******************************************************************
+(defun human_wants_to_load_game ()
+    (princ "Do you want to load a game? (y/n): ")
+    (terpri)
+
+    (let*
+        (
+            (human_choice (read-line))
+        )
+
+        (cond 
+
+            ; if the inputs are invalid, then try again
+            (
+                (not (member (string-upcase human_choice) '("Y" "N") :test #'string=))
+                (princ "Invalid input. Please try again.")
+                (terpri)
+                (human_wants_to_load_game)
+            )
+
+            (
+                (equal (string-upcase human_choice) "Y")
+                t
+            )
+
+            (
+                (equal (string-upcase human_choice) "N")
+                nil
+            )
+        )
+    )
+)
+
 
 
 ;;;; ******************************************************************
