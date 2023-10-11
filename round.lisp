@@ -11,6 +11,63 @@
 
 
 ;;; *********************************************
+;;; Name   : conduct_round
+;;; Arg    : game_state - the current game state
+;;; Purpose: Conducts a round of the game,
+;;;          and after it is over, announces the
+;;;          result and returns the final game state
+;;;          without updating the tournament score
+;;; Return : The final game state after the round is over
+;;; *********************************************
+(defun conduct_round (game_state)
+    (let* 
+        (
+            ; play the round
+            (final_game_state (play_round game_state))
+        )
+
+        ; announce the round results
+        (announce_round_result final_game_state)
+
+        ; return the final game state
+        final_game_state
+    )
+)
+
+
+;;; *********************************************
+;;; Name   : announce_round_result
+;;; Arg    : game_state - the current game state
+;;; Purpose: Announces the result of the round
+;;; Return : Nil
+;;; *********************************************
+(defun announce_round_result (game_state)
+
+    (cond
+
+            (
+                ; if the game is won
+                (get_winner game_state)
+                (format t "~%~A wins the round!" (get_winner game_state))
+                ; Announce the round scores of both human and computer
+                (format t "~%~A's round score: ~A" 'human (get_round_score game_state 'human))
+                (format t "~%~A's round score: ~A~%" 'computer (get_round_score game_state 'computer))
+            )
+
+            (
+                ; if the game is drawn
+                (game_drawn game_state)
+                (format t "~%The game is drawn!")
+                ; Announce the round scores of both human and computer
+                (format t "~%~A's round score: ~A" 'human (get_round_score game_state 'human))
+                (format t "~%~A's round score: ~A~%" 'computer (get_round_score game_state 'computer))
+            )
+    )
+
+)
+
+
+;;; *********************************************
 ;;; Name   : play_round
 ;;; Arg    : game_state - the current game state
 ;;; Purpose: Continues the game until it is over

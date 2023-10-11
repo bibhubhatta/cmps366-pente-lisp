@@ -9,11 +9,8 @@
 (terpri)
 
 (
-  print_game_state
+    conduct_round
         (
-          play_round
-          (
             get_initial_state
-          )
         )
 )
