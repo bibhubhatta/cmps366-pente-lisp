@@ -1,5 +1,4 @@
-(load "board.lisp")
-(load "game_state.lisp")
+(load "strategy.lisp")
 
 ;;;; ******************************************************************
 ;;;; Computer Player functions
@@ -21,12 +20,7 @@
 ;;; *********************************************
 (defun get_computer_move (game_state)
 
-    ; for now, just return a random move
-    (nth 
-            (random (length (get_available_moves (get_board game_state))))
-            
-            (get_available_moves (get_board game_state))
-    )
+    (get_best_move game_state)
 
 )
 
