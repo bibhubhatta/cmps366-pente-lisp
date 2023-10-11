@@ -7,6 +7,31 @@
 
 
 ;;; *********************************************
+;;; Name   : get_pseudo_sequence_score
+;;; Arg    : game_state, player
+;;; Purpose: Calculates the pseudo score for the
+;;;          given player's sequences
+;;; Return : The pseudo score
+;;; Algo   : The pseudo score is calculated by
+;;;          summing the square of the length of
+;;;          sequences that are longer than 1
+;;; *********************************************
+(defun get_pseudo_sequence_score (game_state player)
+
+    (let*
+    
+        (
+            (sequences (get_all_stone_sequences (get_board game_state) (get_stone_from_player game_state player)))
+            (long_sequences (remove-if (lambda (sequence) (< (length sequence) 2)) sequences))
+        )
+        
+        (reduce #'+ (mapcar (lambda (sequence) (* (length sequence) (length sequence))) long_sequences))
+
+    )
+)
+
+
+;;; *********************************************
 ;;; Name   : get_pseudo_score
 ;;; Arg    : game_state, move
 ;;; Purpose: Calculates the pseudo score for the
@@ -39,8 +64,10 @@
         )
         
         (+ 
-            (get_round_score game_state_after_move current_player)
-            (get_round_score game_state_if_opponent_move opponent)
+            (* (get_round_score game_state_after_move current_player) 1000)
+            (* (get_round_score game_state_if_opponent_move opponent) 1000)
+            (* (get_pseudo_sequence_score game_state_after_move current_player) 10)
+            (* (get_pseudo_sequence_score game_state_if_opponent_move opponent) 10)
         )
 
     )
