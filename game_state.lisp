@@ -421,7 +421,7 @@
 
                       (get_all_stone_sequences 
                             (get_board game_state)
-                            (get_stone_from_player game_state 'Human)
+                            (get_stone_from_player game_state 'Computer)
                       )
                 )
         )
