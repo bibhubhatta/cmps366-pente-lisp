@@ -48,6 +48,10 @@
             (
                 ; if the game is won
                 (get_winner game_state)
+                
+                ; Show the winning board because it is not displayed
+                ; after the winning move is made
+                (print_board (cartesian_board (get_board game_state)))
                 (format t "~%~A wins the round!" (get_winner game_state))
                 ; Announce the round scores of both human and computer
                 (format t "~%~A's round score: ~A" 'human (get_round_score game_state 'human))

@@ -197,6 +197,16 @@
 
         ((< (length board) row) nil)
 
+        ; also check if the row is negative
+        ; this is to enable compatibility with
+        ; functions that recursively call get_row
+        ; and decrement the row number to find
+        ; the end of the board
+        ((< row 0) nil)
+
+        ; check if board is empty
+        ((null board) nil)
+
         (t (get_row (cdr board) row))
            
   )
@@ -238,6 +248,85 @@
     )
 
 )
+
+;;; *********************************************
+;;; Name   : up_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the position above of the position
+;;; Return : The top position -- a string
+;;; *********************************************
+(defun up_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the column char
+          (column_char_from_position position) 
+          ; get the next row number
+          (write-to-string (+ 1 (row_number_from_position position)))
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : down_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the position below of the position
+;;; Return : The bottom position -- a string
+;;; *********************************************
+(defun down_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the column char
+          (column_char_from_position position) 
+          ; get the previous row number
+          (write-to-string (- (row_number_from_position position) 1))
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : left_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the position to the left of the position
+;;; Return : The left position -- a string
+;;; *********************************************
+(defun left_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the previous column char
+          (code-char (- (char-code (column_char_from_position position)) 1)) 
+          ; get the row number
+          (write-to-string (row_number_from_position position))
+  )
+)
+
+;;; *********************************************
+;;; Name   : right_position
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the position to the right of the position
+;;; Return : The right position -- a string
+;;; *********************************************
+(defun right_position (position)
+
+  ; use format to concatenate the column char and the row number
+  (format nil "~a~a" 
+          ; get the next column char
+          (code-char (+ 1 (char-code (column_char_from_position position)))) 
+          ; get the row number
+          (write-to-string (row_number_from_position position))
+  )
+)
+
 
 
 ;;; *********************************************
@@ -597,6 +686,20 @@
         )
   )
 
+)
+
+
+;;; *********************************************
+;;; Name   : get_stones
+;;; Args   : board, positions
+;;;          board is the board like the one in the
+;;;          serialization lists
+;;;          positions is a list of positions
+;;; Purpose: Get the stones at the positions
+;;; Return : The stones -- a list of stones
+;;; *********************************************
+(defun get_stones (board positions)
+  (mapcar #'(lambda (position) (get_stone board position)) positions)
 )
 
 ;;; *********************************************

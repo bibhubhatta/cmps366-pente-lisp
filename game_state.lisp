@@ -221,6 +221,18 @@
 )
 
 ;;; *********************************************
+;;; Name   : set_current_stone
+;;; Args   : game_state, stone
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Set the current stone
+;;; Return : The new game state
+;;; *********************************************
+(defun set_current_stone (game_state stone)
+  (replace_nth 6 stone game_state)
+)
+
+;;; *********************************************
 ;;; Name   : switch_player
 ;;; Args   : game_state
 ;;;          game_state is the game state like
@@ -314,6 +326,176 @@
 
 )
 
+
+;;; *********************************************
+;;; Name   : get_capture_sequence
+;;; Args   : stone
+;;;          stone is the stone of the player
+;;; Purpose: Get the capture sequence of the stone
+;;; Return : The capture sequence -- a list of lists
+;;; *********************************************
+(defun get_capture_sequence (stone)
+  (
+    list
+    stone
+    (other_stone stone)
+    (other_stone stone)
+    stone
+  )
+)
+
+;;; *********************************************
+;;; Name   : handle_capture_in_direction
+;;; Args   : game_state, move, direction_function
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;;          move is the move to be made
+;;;          direction_function is the function that
+;;;          returns the next position in the direction
+;;;          of the capture
+;;; Purpose: Handle the capture of the move
+;;; Return : The new game state
+;;; *********************************************
+(defun handle_capture_in_direction (game_state move direction_function)
+  
+  (cond
+
+    (
+      (equalp 
+     
+        (get_capture_sequence (get_stone (get_board game_state) move))
+        
+        (mapcar #'(lambda (position) (get_stone (get_board game_state) position))
+                    
+                    (list
+
+                      move
+                      (funcall direction_function move)
+                      (funcall direction_function (funcall direction_function move))
+                      (funcall direction_function (funcall direction_function (funcall direction_function move)))
+
+                    )
+        ) 
+    
+      )
+
+      (
+        set_no_captures
+
+        (
+          set_board game_state
+            (set_stone
+              (
+              set_stone 
+                          (get_board game_state) 
+                          
+                          (funcall direction_function (funcall direction_function move))
+                          
+                          'O
+              )
+
+              (funcall direction_function move)
+              'O
+            )
+        )
+
+        (get_player_from_stone game_state (get_stone (get_board game_state) move))
+        (
+          + 
+          (get_no_captures game_state (get_player_from_stone game_state (get_stone (get_board game_state) move)))
+          1
+        )
+      )
+
+
+    )
+
+    (
+      t game_state
+    )
+  )
+)
+
+
+(defun handle_capture_left (game_state move)
+  (handle_capture_in_direction game_state move #'left_position)
+)
+
+(defun handle_capture_right (game_state move)
+  (handle_capture_in_direction game_state move #'right_position)
+)
+
+(defun handle_capture_up (game_state move)
+  (handle_capture_in_direction game_state move #'up_position)
+)
+
+(defun handle_capture_down (game_state move)
+  (handle_capture_in_direction game_state move #'down_position)
+)
+
+(defun handle_capture_up_left (game_state move)
+  (handle_capture_in_direction game_state move #'top_left_position)
+)
+
+(defun handle_capture_up_right (game_state move)
+  (handle_capture_in_direction game_state move #'top_right_position)
+)
+
+(defun handle_capture_down_left (game_state move)
+  (handle_capture_in_direction game_state move #'bottom_left_position)
+)
+
+(defun handle_capture_down_right (game_state move)
+  (handle_capture_in_direction game_state move #'bottom_right_position)
+)
+
+;;; *********************************************
+;;; Name   : handle_capture
+;;; Args   : game_state, move
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;;          move is the move to be made
+;;; Purpose: Handle the capture of the move
+;;; Return : The new game state
+;;; *********************************************
+(defun handle_capture (game_state move)
+
+   (
+      handle_capture_left
+        (
+          handle_capture_right
+            (
+              handle_capture_up
+                (
+                  handle_capture_down
+                    (
+                      handle_capture_up_left
+                        (
+                          handle_capture_up_right
+                            (
+                              handle_capture_down_left
+                                (
+                                  handle_capture_down_right
+                                    game_state
+                                    move
+                                )
+                                move
+                            )
+                            move
+                        )
+                        move
+                    )
+                    move
+                )
+                move
+            )
+            move
+        )
+        move
+   )
+ 
+)
+
 (defun make_move (game_state move)
 
   (cond 
@@ -327,12 +509,17 @@
           switch_turn
             ( 
               
-                ; update the game state with the new board
-                set_board game_state
-                    (
-                      ; set the stone on the board
-                      set_stone (get_board game_state) move (get_current_stone game_state)
-                    )      
+              handle_capture
+                (
+                  ; update the game state with the new board
+                  set_board game_state
+                      (
+                        ; set the stone on the board
+                        set_stone (get_board game_state) move (get_current_stone game_state)
+                      )  
+
+                )
+                move    
               
             )
         
@@ -608,28 +795,35 @@
   
  (set_current_player
     
-    ; set new board
-    (set_board
+    ; set first stone to white
+    (
+      set_current_stone
+      
+        ; set new board
+        (set_board
 
-      ; set both captures to 0
-      (
-        set_no_captures
+          ; set both captures to 0
           (
             set_no_captures
-              game_state
-              'Human
+              (
+                set_no_captures
+                  game_state
+                  'Human
+                  0
+              )
+              'Computer
               0
           )
-          'Computer
-          0
-      )
 
-      (get_empty_board 19 19)
+          (get_empty_board 19 19)
+        )
+
+        'White
     )
     
     nil
   
-)
+ )
 
 )
 
