@@ -191,6 +191,18 @@
 )
 
 ;;; *********************************************
+;;; Name   : set_current_player
+;;; Args   : game_state, player
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Set the current player
+;;; Return : The new game state
+;;; *********************************************
+(defun set_current_player (game_state player)
+  (replace_nth 5 player game_state)
+)
+
+;;; *********************************************
 ;;; Name   : switch_player
 ;;; Args   : game_state
 ;;;          game_state is the game state like
@@ -491,6 +503,20 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_tournament_score
+;;; Args   : game_state, player
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;; Purpose: Get the score of the player
+;;; Return : The score -- a number
+;;; *********************************************
+(defun get_tournament_score (game_state player)
+  (cond
+    ((equal player 'Human) (nth 2 game_state))
+    ((equal player 'Computer) (nth 4 game_state))
+  )
+)
 
 ;;;; ******************************************************************
 ;;;; End of game state related functions

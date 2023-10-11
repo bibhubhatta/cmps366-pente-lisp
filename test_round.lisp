@@ -5,7 +5,7 @@
 (load "round.lisp")
 
 
-(print "Testing play_round")
+(princ "Testing play_round")
 (terpri)
 
 (
@@ -13,7 +13,7 @@
         (
           play_round
           (
-            case_4
+            get_initial_state
           )
         )
 )

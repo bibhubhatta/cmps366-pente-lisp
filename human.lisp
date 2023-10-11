@@ -79,3 +79,55 @@
     (save_game_to_user_location game_state)
     (quit)
 )
+
+;;; *********************************************
+;;; Name   : human_wins_toss
+;;; Args   : None
+;;; Purpose: Toss a coin to see who goes first
+;;; Return : t if human wins, nil otherwise
+;;; *********************************************
+(defun human_wins_toss ()
+    
+    (princ "Tossing a coin to see who goes first...")
+    (terpri)
+    (princ "Heads or tails? (h/t): ")
+    (terpri)
+
+    (let*
+        (
+            (human_choice (read-line))
+            (coin_toss (random 2))
+        )
+
+        (cond 
+
+            ; if the inputs are invalid, then try again
+            (
+                (not (member (string-upcase human_choice) '("H" "T") :test #'string=))
+                (princ "Invalid input. Please try again.")
+                (terpri)
+                (human_wins_toss)
+            )
+
+            (
+                (equal coin_toss 1)
+                (princ "You won the toss!")
+                (terpri)
+                t
+            )
+
+            (
+                (equal coin_toss 0)
+                (princ "You lost the toss!")
+                (terpri)
+                nil
+            )
+        )
+    )
+)
+
+
+
+;;;; ******************************************************************
+;;;; End of Human Player functions
+;;;; ******************************************************************
