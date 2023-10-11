@@ -20,7 +20,7 @@
 ;;; *********************************************
 (defun get_computer_move (game_state)
 
-    (get_best_move game_state)
+    (get_best_move_optimized game_state)
 
 )
 

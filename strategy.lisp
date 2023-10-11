@@ -22,9 +22,11 @@
     ; (declare (type list game_state))
     ; (declare (type string move))
 
-    (let* 
+    (let*
     
         (
+            (current_player (get_current_player game_state))
+            (opponent (other_player current_player))
             (game_state_after_move (make_move game_state move))
             
             ; check what happens if opponent plays that move
@@ -37,8 +39,8 @@
         )
         
         (+ 
-            (get_round_score game_state_after_move (get_current_player game_state))
-            (get_round_score game_state_if_opponent_move (other_player (get_current_player game_state)))
+            (get_round_score game_state_after_move current_player)
+            (get_round_score game_state_if_opponent_move opponent)
         )
 
     )
@@ -55,6 +57,55 @@
 (defun get_pseudo_scores (game_state moves)
 
     (mapcar (lambda (move) (list move (get_pseudo_score game_state move))) moves)
+
+)
+
+
+;;; *********************************************
+;;; Name   : get_best_move_optimized
+;;; Arg    : game_state - the current game state
+;;; Purpose: To get the best move for the game state
+;;; Return : The best move -- a position string
+;;; Algo   : The best move is the one with the highest
+;;;          pseudo score. The pseudo score is calculated
+;;;          for available moves, and sorted to find the
+;;;          one with the highest score. The available 
+;;;          moves are filtered to check if they have
+;;;          any neighbors.
+;;; *********************************************
+(defun get_best_move_optimized (game_state)
+    
+    (let*
+            (
+                (available_moves (get_available_moves (get_board game_state)))
+                (available_moves_with_neighbors (get_available_positions_with_neighbors (get_board game_state)))
+            )
+
+            (cond 
+
+                    ; if there is only one move available, return it
+                    ((= (length available_moves) 1) (car available_moves))
+
+                    ; if it's the third move, return random move for now
+                    ((is_third_move (get_board game_state)) (get_random_move game_state))
+
+                    (
+                        (not (null available_moves_with_neighbors))
+                        (car
+                            (car
+                                (
+                                    sort
+                                    (get_pseudo_scores game_state available_moves_with_neighbors)
+                                    (lambda (x y) (> (second x) (second y)))
+                                )
+                            )
+                        )
+                    )
+
+                    (t (get_random_move game_state))
+            )
+    
+    )
 
 )
 

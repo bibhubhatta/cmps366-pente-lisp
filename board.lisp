@@ -407,6 +407,78 @@
 )
 
 
+;;; *********************************************
+;;; Name   : get_neighbors
+;;; Args   : position
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the neighbors of the position
+;;; Return : The neighbors -- a list of position strings
+;;; *********************************************
+(defun get_neighbors (position)
+
+  ; return the neighbors clockwise starting from the top
+  (list 
+        (up_position position)
+        (top_right_position position)
+        (right_position position)
+        (bottom_right_position position)
+        (down_position position)
+        (bottom_left_position position)
+        (left_position position)
+        (top_left_position position)
+  )
+
+)
+
+;;; *********************************************
+;;; Name   : get_neighboring_stones
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get the neighboring stones of a position
+;;; Return : The stones -- a list of stones
+;;; *********************************************
+(defun get_neighboring_stones (board position)
+
+  
+  (remove-if 
+
+        ; remove the nils and the 'O and nils
+          #'(lambda (stone) 
+            
+              (or (null stone) (equal stone 'O))
+          
+            )
+          
+          (get_stones board (get_neighbors position))
+  
+  )
+
+)
+
+
+;;; *********************************************
+;;; Name   : get_available_positions_with_neighbors
+;;; Arg    : board
+;;; Purpose: Gets the list of available positions
+;;;          whose neighbors are occupied
+;;; Return : A list of positions
+;;; *********************************************
+(defun get_available_positions_with_neighbors (board)
+
+
+    (
+      remove-if #'(lambda (position) 
+                    (null (get_neighboring_stones board position))
+                  )
+                 
+                (get_available_moves board)
+    )
+)
+
 
 ;;; *********************************************
 ;;; Name   : get_top_right_diagonal
@@ -1356,6 +1428,54 @@
           (write-to-string (ceiling (+ 1 (get_no_rows board)) 2))
   )
 )
+
+;;; *********************************************
+;;; Name   : is_first_move
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Check if the first move hasn't been made
+;;; Return : t if the next move is the first move,
+;;;          nil otherwise
+;;; *********************************************
+(defun is_first_move (board)
+  (equalp 
+          (+
+              (get_no_stones_on_board board 'W)
+              (get_no_stones_on_board board 'B)
+          )           
+          0
+  )
+)
+
+;;; *********************************************
+;;; Name   : is_third_move
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Check if the third move hasn't been made
+;;; Return : t if the next move is the third move,
+;;;          nil otherwise
+;;; *********************************************
+(defun is_third_move (board)
+  (equalp 
+          (+
+              (get_no_stones_on_board board 'W)
+              (get_no_stones_on_board board 'B)
+          )           
+          2
+  )
+)
+
+;;; *********************************************
+;;; Name   : get_available_moves
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the available moves of the board
+;;; Return : The available moves -- a list of position
+;;;          strings
+;;; *********************************************
 
 (defun get_available_moves (board)
   (cond
