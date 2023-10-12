@@ -179,5 +179,22 @@
 
 )
 
-; (trace get_pseudo_score)
-; (trace get_pseudo_scores)
+
+;;; *********************************************
+;;; Name   : get_move_rationale
+;;; Arg    : game_state, move
+;;; Purpose: To get the rationale for the given move
+;;; Return : A list of reasons
+;;; Algo   : It checks if the move leads to various
+;;;          outcomes and returns the rationale
+;;; *********************************************
+(defun get_move_rationale (game_state move)
+
+    ; return only optimal move for now
+    (list 'optimal)
+
+)
+
+;;; ******************************************************************
+;;; End of strategy related functions
+;;; ******************************************************************

@@ -20,7 +20,19 @@
 ;;; *********************************************
 (defun get_computer_move (game_state)
 
-    (get_best_move_optimized game_state)
+    ; using let because we will have to call 
+    ; get_best_move twice -- once for the move
+    ; and the other for the rationale
+    (
+        let* (
+                (move (get_best_move_optimized game_state))
+                (rationale (get_move_rationale game_state move))
+            )
+
+            (format t "Computer move: ~a~%" move)
+            (format t "Rationale: ~a~%" rationale)
+            move
+    )
 
 )
 

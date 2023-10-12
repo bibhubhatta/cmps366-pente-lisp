@@ -8,6 +8,34 @@
 ;;;; ******************************************************************
 
 
+;;; *********************************************
+;;; Name   : print_help
+;;; Args   : game_state
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;;          file_name is the name of the file to
+;;;          save the game to
+;;; Purpose: Print the optimal move and rationale
+;;; Return : None
+;;; *********************************************
+(defun print_help (game_state)
+
+    ; using let because we will have to call 
+    ; get_best_move twice -- once for the move
+    ; and the other for the rationale
+    (
+        let* (
+                (move (get_best_move_optimized game_state))
+                (rationale (get_move_rationale game_state move))
+            )
+
+            (format t "Optimal move: ~a~%" move)
+            (format t "Rationale: ~a~%" rationale)
+            move
+    )
+
+)
+
 
 ;;; *********************************************
 ;;; Name   : get_human_move
@@ -35,6 +63,13 @@
                         ; if user wants to quit, ie. "q"
                         (equal (string-upcase move) "Q")
                         (save_and_quit game_state)
+                    )
+
+                    (
+                        ; if user wants help, ie. "h"
+                        (equal (string-upcase move) "H")
+                        (print_help game_state)
+                        (get_human_move game_state)
                     )
 
                     (
