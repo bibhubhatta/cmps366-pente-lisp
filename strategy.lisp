@@ -60,6 +60,46 @@
 )
 
 ;;; *********************************************
+;;; Name   : capturing_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is a
+;;;          capturing move
+;;; Return : t if it is a capturing move, nil otherwise
+;;; Algo   : Makes the move and checks if the
+;;;          no. captured stones changes
+;;; *********************************************
+(defun capturing_move (game_state move)
+
+    ; Use let to optimize the code
+    (let*
+    
+        (
+            (current_player (get_current_player game_state))
+            (opponent (other_player current_player))
+            (game_state_after_move (make_move game_state move))
+        )
+        
+        (cond 
+                ; if the no. of captured stones hasnt changed, then
+                ; return nil
+                (
+                    (= 
+                        (get_no_captures game_state current_player)
+                        (get_no_captures game_state_after_move current_player)
+                    )
+                    nil
+                    
+                )
+                
+                (t t)
+            
+        )
+    )
+
+)
+
+
+;;; *********************************************
 ;;; Name   : only_move
 ;;; Arg    : game_state, move
 ;;; Purpose: To check if the given move is the
@@ -365,6 +405,7 @@
                 (move_analysis_functions (list 'only_move
                                                'winning_move
                                                'win_blocking_move
+                                               'capturing_move
                                                'sequence_making_move
                                                'sequence_blocking_move
                                          )
