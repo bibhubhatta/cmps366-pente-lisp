@@ -33,6 +33,32 @@
 )
 
 ;;; *********************************************
+;;; Name   : win_blocking_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move prevents
+;;;          the opponent from winning by playing
+;;;          that move
+;;; Return : T if it is a win blocking move, nil otherwise
+;;; Algo   : Switches the turn and checks if the
+;;;          move is a winning move
+;;; *********************************************
+(defun win_blocking_move (game_state move)
+
+    (cond 
+            ; if there is a winner after move is made, then
+            ; return t
+            (
+                (get_winner (make_move (switch_turn game_state) move))
+                t
+                
+            )
+            
+            (t nil)
+        
+    )
+
+)
+
 ;;; Name   : only_move
 ;;; Arg    : game_state, move
 ;;; Purpose: To check if the given move is the
@@ -337,8 +363,9 @@
             (
                 (move_analysis_functions (list 'only_move
                                                'winning_move
-                                                'sequence_making_move
-                                                'sequence_blocking_move
+                                               'win_blocking_move
+                                               'sequence_making_move
+                                               'sequence_blocking_move
                                          )
                 )
             )
