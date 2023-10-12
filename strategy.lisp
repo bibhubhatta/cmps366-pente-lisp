@@ -222,11 +222,11 @@
     ; neighborhood, because it might be a capturing
     ; move
 
-    (let*
+    (let
     
         (
             (game_state_after_move (make_move game_state move))
-            (current_stone (get_current_stone game_state_after_move))
+            (current_stone (get_current_stone game_state))
         )
         
         (cond
