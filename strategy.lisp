@@ -100,6 +100,21 @@
 
 
 ;;; *********************************************
+;;; Name   : capture_blocking_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is a
+;;;          capture blocking move
+;;; Return : t if it is a capture blocking move, nil otherwise
+;;; Algo   : Switches the turn and checks if the
+;;;          move is a capturing move
+;;; *********************************************
+(defun capture_blocking_move (game_state move)
+
+   (capturing_move (switch_turn game_state) move)
+
+)
+
+;;; *********************************************
 ;;; Name   : only_move
 ;;; Arg    : game_state, move
 ;;; Purpose: To check if the given move is the
@@ -406,6 +421,7 @@
                                                'winning_move
                                                'win_blocking_move
                                                'capturing_move
+                                               'capture_blocking_move
                                                'sequence_making_move
                                                'sequence_blocking_move
                                          )
