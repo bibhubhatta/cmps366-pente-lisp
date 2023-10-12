@@ -59,6 +59,7 @@
 
 )
 
+;;; *********************************************
 ;;; Name   : only_move
 ;;; Arg    : game_state, move
 ;;; Purpose: To check if the given move is the
