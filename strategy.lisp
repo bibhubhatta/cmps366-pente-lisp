@@ -1,9 +1,152 @@
 (load "game_state.lisp")
+(load "board.lisp")
 
 
 ;;;; ******************************************************************
 ;;;; Strategy related functions
 ;;;; ******************************************************************
+
+
+;;; *********************************************
+;;; Name   : winning_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is a
+;;;          winning move
+;;; Return : T if it is a winning move, nil otherwise
+;;; Algo   : It checks if the move leads to a win
+;;; *********************************************
+(defun winning_move (game_state move)
+
+    (cond 
+            ; if there is a winner after move is made, then
+            ; return t
+            (
+                (get_winner (make_move game_state move))
+                t
+                
+            )
+            
+            (t nil)
+        
+    )
+
+)
+
+;;; *********************************************
+;;; Name   : only_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is the
+;;;          only move available
+;;; Return : t if it is the only move, nil otherwise
+;;; Algo   : It checks if the move is the only move
+;;;          available
+;;; *********************************************
+(defun only_move (game_state move)
+
+    (cond 
+            ; if there is only one move available, then
+            ; return t
+            (
+                (= (length (get_available_moves (get_board game_state))) 1)
+                t   
+            )
+            (t nil)
+        
+    )
+)
+
+;;; *********************************************
+;;; Name   : stone_in_list
+;;; Arg    : stone, list
+;;; Purpose: To check if the given stone is in the
+;;;          given list. This was necessary because
+;;;          member could not be used with both full
+;;;          words and single letter representations
+;;; Return : t if it is in the list, nil otherwise
+;;; *********************************************
+(defun stone_in_list (stone list)
+
+    (cond 
+
+            ; if the stone is in the full word representation
+            ; call the function again with the single letter
+            (
+                (equal stone 'White)
+                (stone_in_list 'W list)
+            )
+
+            (
+                (equal stone 'Black)
+                (stone_in_list 'B list)
+            )
+
+            (
+                (equal stone 'Empty)
+                (stone_in_list 'O list)
+            )
+
+        
+            ; if the stone is in the list, then
+            ; return t
+            (
+                (member stone list :test #'equal)
+                t   
+            )
+            (t nil)
+        
+    )
+)
+
+;;; *********************************************
+;;; Name   : sequence_making_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is a
+;;;          sequence making move
+;;; Return : t if it is a sequence making move, nil otherwise
+;;; Algo   : Checks if there is a same stone in its
+;;;          neighborhood
+;;; *********************************************
+(defun sequence_making_move (game_state move)
+
+    (cond
+
+            (
+                (stone_in_list 
+                        (get_current_stone game_state)
+                        (get_neighboring_stones (get_board game_state) move) 
+                )
+                t
+            )
+
+            (t nil)
+    )
+)
+
+
+
+;;; *********************************************
+;;; Name   : sequence_blocking_move
+;;; Arg    : game_state, move
+;;; Purpose: To check if the given move is a
+;;;          sequence blocking move
+;;; Return : t if it is a sequence blocking move, nil otherwise
+;;; Algo   : Checks if there is a opponent's stone in its
+;;;          neighborhood
+;;; *********************************************
+(defun sequence_blocking_move (game_state move)
+
+    (cond
+
+            (   
+                (stone_in_list
+                        (other_stone (get_current_stone game_state))  
+                        (get_neighboring_stones (get_board game_state) move) 
+                )
+                t
+            )
+            (t nil)
+    )
+)
 
 
 ;;; *********************************************
@@ -189,9 +332,20 @@
 ;;;          outcomes and returns the rationale
 ;;; *********************************************
 (defun get_move_rationale (game_state move)
+    (let*
 
-    ; return only optimal move for now
-    (list 'optimal)
+            (
+                (move_analysis_functions (list 'only_move
+                                               'winning_move
+                                                'sequence_making_move
+                                                'sequence_blocking_move
+                                         )
+                )
+            )
+
+            ; return the names of the functions that return t
+            (remove-if-not (lambda (function) (funcall function game_state move)) move_analysis_functions)
+    )
 
 )
 
