@@ -1148,20 +1148,49 @@
 )
 
 ;;; *********************************************
-;;; Name   : get_all_diagonal_starts
+;;; Name   : get_last_row_positions
 ;;; Args   : board
 ;;;          board is a list of lists
 ;;;          without the row/column markers,
-;;; Purpose: Get all the diagonal starts of the board
+;;; Purpose: Get all the positions of the last row
+;;; Return : The positions -- a list of position
+;;;          strings
+;;; Algo   : Uses the get_first_row_positions function
+;;;          to get the first row positions and then
+;;;          replaces the row number with the length
+;;;          of the board
+;;; *********************************************
+(defun get_last_row_positions (board)
+
+  (mapcar
+        #'(lambda (position) 
+            (format nil "~a~a" 
+                    (column_char_from_position position) 
+                    (write-to-string (length board))
+            )
+        )
+        (get_first_row_positions board)
+
+  )
+)
+
+
+;;; *********************************************
+;;; Name   : get_all_positive_diagonal_starts
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the positive diagonal starts of
+;;;          the board
 ;;; Return : The diagonal starts -- a list of position
 ;;;          strings
 ;;; Algo   : Recursively append the diagonal starts
 ;;;          until the end of the board is reached
 ;;;          and remove the duplicates
 ;;;          The diagonal starts are the cells
-;;;          of the first row and column of the board
+;;;          of the first row and first column of the board
 ;;; *********************************************
-(defun get_all_diagonal_starts (board)
+(defun get_all_positive_diagonal_starts (board)
   (
     cond
         ((null board) nil)
@@ -1181,38 +1210,88 @@
 
             )
         )
-
-
   )
 )
 
 ;;; *********************************************
-;;; Name   : get_diagonals_from_positions
-;;; Args   : board, positions
+;;; Name   : get_all_negative_diagonal_starts
+;;; Args   : board
 ;;;          board is a list of lists
 ;;;          without the row/column markers,
-;;;          positions is a list of position strings
-;;; Purpose: Get the diagonals from the positions
-;;; Return : The diagonals -- a list of lists
-;;; Algo   : Recursively append the diagonals
-;;;          until the end of the positions is reached
+;;; Purpose: Get all the negative diagonal starts of
+;;;          the board
+;;; Return : The diagonal starts -- a list of position
+;;;          strings
+;;; Algo   : Recursively append the diagonal starts
+;;;          until the end of the board is reached
+;;;          and remove the duplicates
+;;;          The diagonal starts are the cells
+;;;          of the last row and first column of the board
 ;;; *********************************************
-(defun get_diagonals_from_positions (board positions)
+(defun get_all_negative_diagonal_starts (board)
   (
     cond
-        ((null positions) nil)
+        ((null board) nil)
         (
           t 
             (
-              append 
-                    (list (get_positive_diagonal board (car positions)))
-                    (list (get_negative_diagonal board (car positions)))
-                    (get_diagonals_from_positions board (cdr positions))
+              ; duplicates need to be removed because
+              ; the first cell is in both the last 
+              ; row and the first column of the board
+              remove-duplicates
+              (
+                append
+                      (get_last_row_positions board)
+                      (get_first_column_positions board)
+              )
+              :test #'equal
+
             )
         )
-    
-   )
+  )
 )
+
+
+;;; *********************************************
+;;; Name   : get_all_positive_diagonals
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the positive diagonals of the board
+;;; Return : The diagonals -- a list of lists
+;;; *********************************************
+(defun get_all_positive_diagonals (board)
+
+  (mapcar
+       
+        #'(lambda (position) 
+            (get_positive_diagonal board position)
+          )
+        (get_all_positive_diagonal_starts board)
+  )
+    
+)  
+
+;;; *********************************************
+;;; Name   : get_all_negative_diagonals
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get all the negative diagonals of the board
+;;; Return : The diagonals -- a list of lists
+;;; *********************************************
+(defun get_all_negative_diagonals (board)
+
+  (mapcar
+       
+        #'(lambda (position) 
+            (get_negative_diagonal board position)
+          )
+        (get_all_negative_diagonal_starts board)
+  )
+    
+)
+
 
 ;;; *********************************************
 ;;; Name   : get_all_diagonals
@@ -1225,7 +1304,9 @@
 (defun get_all_diagonals (board)
 
   (
-    get_diagonals_from_positions board (get_all_diagonal_starts board)
+    append 
+          (get_all_positive_diagonals board)
+          (get_all_negative_diagonals board)
   )
   
 )
