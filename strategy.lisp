@@ -217,16 +217,30 @@
 ;;; *********************************************
 (defun sequence_blocking_move (game_state move)
 
-    (cond
+    ; Make the move first and then check
+    ; if there is an opponent's stone in its
+    ; neighborhood, because it might be a capturing
+    ; move
 
-            (   
-                (stone_in_list
-                        (other_stone (get_current_stone game_state))  
-                        (get_neighboring_stones (get_board game_state) move) 
+    (let*
+    
+        (
+            (game_state_after_move (make_move game_state move))
+            (current_stone (get_current_stone game_state_after_move))
+        )
+        
+        (cond
+
+                (
+                    (stone_in_list 
+                            (other_stone current_stone)  
+                            (get_neighboring_stones (get_board game_state_after_move) move) 
+                    )
+                    t
                 )
-                t
-            )
-            (t nil)
+
+                (t nil)
+        )
     )
 )
 
