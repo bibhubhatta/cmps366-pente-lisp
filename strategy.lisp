@@ -286,11 +286,11 @@
     ; (declare (type list game_state))
     ; (declare (type string move))
 
-    (let*
+    (let
     
         (
             (current_player (get_current_player game_state))
-            (opponent (other_player current_player))
+            (opponent (other_player (get_current_player game_state)))
             (game_state_after_move (make_move game_state move))
             
             ; check what happens if opponent plays that move
@@ -357,14 +357,14 @@
 
                     (
                         (not (null available_moves_with_neighbors))
-                        (car
-                            (car
+                        (caar
+                           
                                 (
                                     sort
                                     (get_pseudo_scores game_state available_moves_with_neighbors)
                                     (lambda (x y) (> (second x) (second y)))
                                 )
-                            )
+                            
                         )
                     )
 
@@ -388,14 +388,14 @@
 ;;; *********************************************
 (defun get_best_move (game_state)
 
-    (car
-        (car
+    (caar
+        
             (
                 sort
                 (get_pseudo_scores game_state (get_available_moves (get_board game_state)))
                 (lambda (x y) (> (second x) (second y)))
             )
-        )
+        
     )
 
 )
