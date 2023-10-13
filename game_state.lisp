@@ -499,10 +499,23 @@
 (defun make_move (game_state move)
 
   (cond 
-  
+      ; commenting out the code to check move validity
+      ; because it is already checked for human player
+      ; during input, and computer only plays valid moves
+      ; this, hopefully, makes the game faster
+      ; remove if more security is required/ using
+      ; this function in other places
+      ; (
+      ;       ; if the move is invalid
+      ;       (not (member move (get_available_moves (get_board game_state)) :test #'string=))
+      ;       (format t "Invalid move!~%")
+      ;       ;return the same game state
+      ;       game_state
+      ; )
+
+
       (
-        ; if the move is valid
-        (member move (get_available_moves (get_board game_state)) :test #'string=)
+        t
 
         (
           ; switch the turn
@@ -525,15 +538,6 @@
         
         )
       
-      
-      )
-
-      (
-        ; if the move is invalid
-        t
-        (format t "Invalid move!~%")
-        ;return the same game state
-        game_state
       )
 
   )
