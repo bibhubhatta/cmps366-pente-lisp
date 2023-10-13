@@ -1619,41 +1619,68 @@
       ((equal stone 'empty) (get_sequence_score board 'O))
 
       (t
-          (
-            +
-            ; Score for sequences of length 5 or more
-            (
-              *
-            ; number of sequences of length 5 or more
-            ( 
-                length
-                      (
-                        remove-if-not
-                          #'(lambda (sequence)
-                              (>= (length sequence) 5)
-                            )
-                          (get_all_stone_sequences board stone)
-                      )
+          (let*
+
+              (
+                (all_stone_sequences (get_all_stone_sequences board stone))
+                
+                (four_or_more_sequences
+                    (remove-if-not
+                        #'(lambda (sequence)
+                            (>= (length sequence) 4)
+                          )
+                        
+                        all_stone_sequences
+                    )
+                )
+
               )
 
-              5
-            )
 
-
-            ; Score for sequences of length 4
-            (
-              ; number of sequences of length 4
-                length
-                      (
-                        remove-if-not
-                          #'(lambda (sequence)
-                              (= (length sequence) 4)
-                            )
-                          (get_all_stone_sequences board stone)
+              (
+                    +
+                    ; Score for sequences of length 5 or more
+                    (
+                      *
+                    ; number of sequences of length 5 or more
+                    ( 
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (>= (length sequence) 5)
+                                    )
+                                  four_or_more_sequences
+                              )
                       )
-            )
-            
+
+                      5
+                    )
+
+
+                    ; Score for sequences of length 4
+                    (
+                      ; number of sequences of length 4
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (= (length sequence) 4)
+                                    )
+                                  four_or_more_sequences
+                              )
+                    )
+              
+              )
+
           )
+            
+            
+            
+      
+          
+          
+
         )
     )
 )
