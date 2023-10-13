@@ -286,7 +286,7 @@
     ; (declare (type list game_state))
     ; (declare (type string move))
 
-    (let
+    (let*
     
         (
             (current_player (get_current_player game_state))
