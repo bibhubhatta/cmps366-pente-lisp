@@ -8,6 +8,12 @@
 (load "round.lisp")
 (load "tournament.lisp")
 
+; Seed the random number generator
+; Otherwise, the random number generator will always
+; generate the same sequence of numbers
+; This is the only place where setf is used
+(setf *random-state* (make-random-state t))
+
 ;;;; ******************************************************************
 ;;;; Runner for the Pente game
 ;;;; ******************************************************************
