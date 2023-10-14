@@ -1,7 +1,3 @@
-(load "file_handling.lisp")
-(load "game_state.lisp")
-
-
 ;;;; ******************************************************************
 ;;;; Human Player functions
 ;;;; Used for getting inputs from the human

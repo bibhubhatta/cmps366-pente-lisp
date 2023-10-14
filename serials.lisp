@@ -1,5 +1,3 @@
-(load "file_handling.lisp")
-
 ;;;; ******************************************************************
 ;;;; Serialization lists
 ;;;; Used for debugging and final demo

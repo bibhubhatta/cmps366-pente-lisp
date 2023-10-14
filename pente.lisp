@@ -1,5 +1,12 @@
+(load "board.lisp")
+(load "game_state.lisp")
+(load "strategy.lisp")
+(load "file_handling.lisp")
+(load "serials.lisp")
+(load "human.lisp")
+(load "computer.lisp")
+(load "round.lisp")
 (load "tournament.lisp")
-
 
 ;;;; ******************************************************************
 ;;;; Runner for the Pente game

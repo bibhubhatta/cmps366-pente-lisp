@@ -1,11 +1,3 @@
-(load "board.lisp")
-(load "game_state.lisp")
-(load "serials.lisp")
-(load "human.lisp")
-(load "computer.lisp")
-(load "round.lisp")
-
-
 ;;;; ******************************************************************
 ;;;; Tournament related functions
 ;;;; ******************************************************************
