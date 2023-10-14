@@ -1617,6 +1617,65 @@
   )
 )
 
+
+;;; *********************************************
+;;; Name   : get_positions_3_away_from_center
+;;; Args   : board
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;; Purpose: Get the positions that are 3 intersections
+;;;          away from the center of the board
+;;; Return : The positions -- a list of position strings
+;;; *********************************************
+(defun get_positions_3_away_from_center (board)
+    (let
+
+        (
+          (center (get_center board))
+          (center_row (row_number_from_position (get_center board)))
+          (center_column (column_number_from_position (get_center board)))
+        )
+
+        (list
+            (format nil "~a~a" 
+                    (code-char (+ 64 center_column)) 
+                    (write-to-string (+ center_row 3))
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 center_column)) 
+                    (write-to-string (- center_row 3))
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 (+ center_column 3))) 
+                    (write-to-string center_row)
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 (- center_column 3))) 
+                    (write-to-string center_row)
+            )
+
+            (format nil "~a~a" 
+                    (code-char (+ 64 (+ center_column 3))) 
+                    (write-to-string (+ center_row 3))
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 (- center_column 3))) 
+                    (write-to-string (- center_row 3))
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 (+ center_column 3))) 
+                    (write-to-string (- center_row 3))
+            )
+            (format nil "~a~a" 
+                    (code-char (+ 64 (- center_column 3))) 
+                    (write-to-string (+ center_row 3))
+            )
+        )
+    )
+
+)
+
+
 ;;; *********************************************
 ;;; Name   : is_first_move
 ;;; Args   : board

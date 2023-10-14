@@ -428,24 +428,24 @@
 ;;; *********************************************
 (defun get_best_move_optimized (game_state)
     
-    (let*
+    (let
             (
-                (available_moves (get_available_moves (get_board game_state)))
                 (available_moves_with_neighbors (get_available_positions_with_neighbors (get_board game_state)))
             )
 
             (cond 
-
-                    ; if there is only one move available, return it
-                    ((= (length available_moves) 1) (car available_moves))
-
-                    ; if it's the third move, return the move closest to the center
+                    ; if it's the third move, return a random position 3 intersections
+                    ; away from the center
                     (
-                        (is_third_move (get_board game_state)) 
-                        
-                        (get_random_move game_state)
-                                       
-                    
+                        (is_third_move game_state)
+
+                        (let
+                                (
+                                    (3_away (get_positions_3_away_from_center (get_board game_state)))
+                                )
+
+                                (nth (random (length 3_away)) 3_away)
+                        )
                     )
 
                     (
@@ -504,9 +504,13 @@
 (defun get_random_move (game_state)
 
     (
-        nth
-        (random (length (get_available_moves (get_board game_state))))
-        (get_available_moves (get_board game_state))
+        let
+    
+            (
+                (available_moves (get_available_moves (get_board game_state)))
+            )
+            
+            (nth (random (length available_moves)) available_moves)
     )
 
 )
