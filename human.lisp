@@ -46,7 +46,7 @@
 (defun get_human_move (game_state)
 
 
-    (princ "Enter your move: ")
+    (princ "Enter your move, e.g. A10, ask help (h), or quit (q): ")
     (terpri)
     (let
         ( 
@@ -206,7 +206,7 @@
 ;;;;          otherwise
 ;;;; ******************************************************************
 (defun human_wants_to_load_game ()
-    (princ "Do you want to load a game? (y/n): ")
+    (princ "Do you want to load from file? (y/n): ")
     (terpri)
 
     (let
