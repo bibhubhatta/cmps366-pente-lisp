@@ -72,7 +72,7 @@
 ;;; *********************************************
 (defun play_round (game_state)
 
-    (let*
+    (let
 
         (
             ; set the starting player if the game is just starting
@@ -94,21 +94,19 @@
                 (print_game_state game_state)
 
                 (play_round 
-                     (make_move
-                            game_state
-                            ; get current player's move
-                            (get_move game_state)
+                    (ask_save_game
+                        (make_move
+                                game_state
+                                ; get current player's move
+                                (get_move game_state)
+                        )
                     )
                 )
              )
         )
-
-    
-    
     )
-    
-
 )
+
 
 ;;; *********************************************
 ;;; Name   : get_move

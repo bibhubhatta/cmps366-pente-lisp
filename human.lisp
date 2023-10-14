@@ -19,8 +19,8 @@
     ; using let because we will have to call 
     ; get_best_move twice -- once for the move
     ; and the other for the rationale
-    (
-        let (
+    (let 
+            (
                 (move (get_best_move_optimized game_state))
             )
 
@@ -48,7 +48,7 @@
 
     (princ "Enter your move: ")
     (terpri)
-    (let*
+    (let
         ( 
             (move (read-line))
         )
@@ -123,7 +123,7 @@
     (princ "Heads or tails? (h/t): ")
     (terpri)
 
-    (let*
+    (let
         (
             (human_choice (read-line))
             (coin_toss (random 2))
@@ -168,7 +168,7 @@
     (princ "Do you want to play again? (y/n): ")
     (terpri)
 
-    (let*
+    (let
         (
             (human_choice (read-line))
         )
@@ -209,7 +209,7 @@
     (princ "Do you want to load a game? (y/n): ")
     (terpri)
 
-    (let*
+    (let
         (
             (human_choice (read-line))
         )
@@ -233,6 +233,84 @@
                 (equal (string-upcase human_choice) "N")
                 nil
             )
+        )
+    )
+)
+
+;;; *********************************************
+;;; Name   : ask_yes_no_question
+;;; Args   : question
+;;;          question is the question to ask
+;;; Purpose: Ask the human a yes or no question
+;;;          and validate the input
+;;; Return : t if human answers yes, nil otherwise
+;;; *********************************************
+(defun ask_yes_no_question (question)
+    (princ question)
+    (terpri)
+
+    (let
+        (
+            (human_choice (read-line))
+        )
+
+        (cond 
+
+            ; if the inputs are invalid, then try again
+            (
+                (not (member (string-upcase human_choice) '("Y" "N") :test #'string=))
+                (princ "Invalid input. Please try again.")
+                (terpri)
+                (ask_yes_no_question question)
+            )
+
+            (
+                (equal (string-upcase human_choice) "Y")
+                t
+            )
+
+            (
+                (equal (string-upcase human_choice) "N")
+                nil
+            )
+        )
+    )
+)
+
+
+;;; *********************************************
+;;; Name   : ask_save_game
+;;; Arg    : game_state - the current game state
+;;; Purpose: Asks the user if they want to save the game
+;;;          and quit
+;;; Return : game_state - the current game state
+;;;          The game state is returned if the answer is no
+;;;          so that the game can continue in the round loop
+;;; *********************************************
+(defun ask_save_game (game_state)
+
+
+    (print_game_state game_state)
+    (terpri)
+    (terpri)
+
+    (let
+        (
+            (human_wants_to_save (ask_yes_no_question "Do you want to save the game and quit? (y/n): "))
+        )
+
+        (cond 
+            
+            (
+                human_wants_to_save
+                (save_and_quit game_state)
+            )
+
+            (
+                (not human_wants_to_save)
+                game_state
+            )
+
         )
     )
 )
