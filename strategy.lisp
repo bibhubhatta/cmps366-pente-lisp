@@ -376,6 +376,8 @@
             (* (get_no_captures game_state_if_opponent_move opponent) 500)
             (* (get_pseudo_sequence_score_localized game_state_after_move current_player move) 10)
             (* (get_pseudo_sequence_score_localized game_state_if_opponent_move opponent move) 10)
+            ; subtract the distance from the center to prevent playing at the edges
+            (- 0 (get_distance (get_center (get_board game_state)) move))
         )
 
     )
@@ -437,8 +439,14 @@
                     ; if there is only one move available, return it
                     ((= (length available_moves) 1) (car available_moves))
 
-                    ; if it's the third move, return random move for now
-                    ((is_third_move (get_board game_state)) (get_random_move game_state))
+                    ; if it's the third move, return the move closest to the center
+                    (
+                        (is_third_move (get_board game_state)) 
+                        
+                        (get_random_move game_state)
+                                       
+                    
+                    )
 
                     (
                         (not (null available_moves_with_neighbors))
