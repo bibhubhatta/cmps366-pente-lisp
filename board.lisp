@@ -965,8 +965,8 @@
   (cond
         ((null board) nil)
         (t (append 
-                (get_empty_positions (cdr board))
                 (get_empty_positions_in_row (car board) (length board))
+                (get_empty_positions (cdr board))
            )
         )
   )
