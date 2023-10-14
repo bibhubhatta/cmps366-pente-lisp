@@ -1421,26 +1421,86 @@
 ;;;          the stone at the position
 (defun get_all_stone_sequences_localized (board position)
 
-  ; filter the stone sequences to get only the sequences
-            ; that contain the stone
-            (remove-if-not
-              
-              #'(lambda (stone_sequence)
-                  (equal (list (get_stone board position)) (remove-duplicates stone_sequence :test #'equal))
-                )
+      (list
 
+            (get_row_stone_sequence board position)
+            (get_column_stone_sequence board position)
+            (get_positive_diagonal_stone_sequence board position)
+            (get_negative_diagonal_stone_sequence board position)
+      )
+
+)
+
+
+(defun get_stone_sequence_in_direction (board position direction_function)  
+
+  (let*
+
+          (
+            (position_in_direction (funcall direction_function position))
+            (stone_in_direction (get_stone board position_in_direction))
+            (current_stone (get_stone board position))
+          )
+
+
+  
+
+      (cond
+            
+            (
+              (equal current_stone stone_in_direction)
               (
-                convert_board_sequences_to_stone_sequences 
-                board 
-                (
-                  list
-                        (get_row board (row_number_from_position position))
-                        (get_column board (column_char_from_position position))
-                        (get_positive_diagonal board position)
-                        (get_negative_diagonal board position)
-                )
+                cons 
+                      current_stone
+                      (get_stone_sequence_in_direction board position_in_direction direction_function)
               )
             )
+
+            (t nil)
+      )
+  )
+
+)
+
+
+(defun get_row_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'left_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'right_position)
+    )
+)
+
+
+(defun get_column_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'up_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'down_position)
+    )
+)
+
+(defun get_positive_diagonal_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'top_right_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'bottom_left_position)
+    )
+)
+
+(defun get_negative_diagonal_stone_sequence (board position)
+
+    (append
+          (reverse (get_stone_sequence_in_direction board position #'top_left_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'bottom_right_position)
+    )
 )
 
 ;;; *********************************************
