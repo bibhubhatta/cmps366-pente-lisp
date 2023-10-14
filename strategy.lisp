@@ -545,6 +545,113 @@
 
 )
 
+;;; *********************************************
+;;; Name   : get_rationale_explanation
+;;; Arg    : rationale
+;;; Purpose: To get the explanation for the given rationale
+;;; Return : A sentence string explaining the rationale
+;;; *********************************************
+
+(defun get_rationale_explanation (rationale)
+
+    (cond
+
+            (
+                (eq rationale 'only_move)
+                "is the only available move."
+            )
+
+            (
+                (eq rationale 'winning_move)
+                "is a winning move."
+            )
+
+            (
+                (eq rationale 'win_blocking_move)
+                "prevents the opponent from winning."
+            )
+
+            (
+                (eq rationale 'capturing_move)
+                "is a capturing move."
+            )
+
+            (
+                (eq rationale 'capture_blocking_move)
+                "prevents the opponent from capturing."
+            )
+
+            (
+                (eq rationale 'sequence_making_move)
+                "is a sequence making move. "
+            )
+
+            (
+                (eq rationale 'sequence_blocking_move)
+                "prevent the opponent from making a sequence. "
+            )
+
+            (t "is a random move closest to the center.")
+
+    )
+)
+
+;;; *********************************************
+;;; Name   : get_explanation_from_rationales
+;;; Arg    : rationales
+;;;          A list of rationales
+;;; Purpose: To get the rationale explanations for the given move
+;;; Return : One or multiple sentence strings explaining the rationale
+;;;         It is one string only
+;;; *********************************************
+(defun get_explanation_from_rationales (rationales)
+
+    (cond
+
+            (
+                ; if there are no rationales, then it is a random move
+                ; closest to the center for the third move
+                ; because all other moves are around other stones
+                (null rationales)
+                "The move is a random move closest to the center that is 3 intersections away."
+            )
+            
+            (
+                ; if there is only one rationale, then
+                ; return the explanation
+                (eq (length rationales) 1)
+                (concatenate 'string
+                             "The move "
+                             (get_rationale_explanation (car rationales))
+                )
+            )
+
+            
+            ; if there are multiple rationales, then
+            ; return the explanations concatenated
+            (t
+                (concatenate 'string
+                            
+                            "The move "
+                            (get_rationale_explanation (car rationales))
+                            " "
+                        
+                            ; concatenate the explanations with "it also"
+
+                            (format 
+                                    nil
+                                    
+                                    "~{It also ~a~^ ~}" 
+                                    
+                                    ; get the explanations for each rationale
+                                    (mapcar #'get_rationale_explanation (cdr rationales))
+                            )
+                )
+            )
+    )
+
+)
+
 ;;; ******************************************************************
 ;;; End of strategy related functions
 ;;; ******************************************************************

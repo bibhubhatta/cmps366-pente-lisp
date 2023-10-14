@@ -20,13 +20,12 @@
     ; get_best_move twice -- once for the move
     ; and the other for the rationale
     (
-        let* (
+        let (
                 (move (get_best_move_optimized game_state))
-                (rationale (get_move_rationale game_state move))
             )
 
             (format t "Optimal move: ~a~%" move)
-            (format t "Rationale: ~a~%" rationale)
+            (format t "Rationale: ~a~%" (get_explanation_from_rationales (get_move_rationale game_state move)))
             move
     )
 

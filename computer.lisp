@@ -28,7 +28,7 @@
             )
 
             (format t "Computer move: ~a~%" move)
-            (format t "Rationale: ~a~%" rationale)
+            (format t "Rationale: ~a~%" (get_explanation_from_rationales (get_move_rationale game_state move)))
             move
     )
 
