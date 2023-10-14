@@ -972,6 +972,7 @@
   )
 )
 
+
 ;;; *********************************************
 ;;; Name   : get_empty_positions_in_row
 ;;; Args   : row, row_num
@@ -984,32 +985,39 @@
 ;;;          strings
 ;;; *********************************************
 (defun get_empty_positions_in_row (row row_num)
-  (cond
-        ((null row) nil)
-       
-        (
-          ; row needs to be reversed because,
-          ; to deduce the column char, we need
-          ; to get the length of the row
-          (equal (car (reverse row)) 'O) 
-          
-          (
-            cons 
-                  (format nil "~a~a" 
-                          (code-char (+ 64 (length row))) 
-                          (write-to-string row_num)
-                  )
-                  
-                  (get_empty_positions_in_row 
-                                ; remove the last element of the row
-                                ; and get the rest of the empty positions
-                                (reverse (cdr (reverse row))) 
-                                row_num
-                  )
-          )
-        )
+
+  (let*
+
+    (
+      (last_element (car (last row)))
+      (row_sans_last (butlast row))
+    )
+
+    (cond
+          ((null row) nil)
         
-        (t (get_empty_positions_in_row (reverse (cdr (reverse row))) row_num))
+          (
+            (equal last_element 'O) 
+            
+            (
+              cons 
+                    (format nil "~a~a" 
+                            (code-char (+ 64 (length row))) 
+                            (write-to-string row_num)
+                    )
+                    
+                    (get_empty_positions_in_row 
+                                  ; remove the last element of the row
+                                  ; and get the rest of the empty positions
+                                  row_sans_last 
+                                  row_num
+                    )
+            )
+          )
+          
+          (t (get_empty_positions_in_row row_sans_last row_num))
+    )
+
   )
 )
 
