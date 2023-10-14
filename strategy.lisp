@@ -372,6 +372,12 @@
         (+ 
             (* (get_round_score_localized game_state_after_move current_player move) 1000)
             (* (get_round_score_localized game_state_if_opponent_move opponent move) 1000)
+
+            ; Prioritze capturing moves over 4 in a sequence
+            (* (get_no_captures game_state_after_move current_player) 1000)
+            ; prioritize offensive capture over defensive blocking
+            ; by giving less weightage to the opponent's captures
+            (* (get_no_captures game_state_if_opponent_move opponent) 500)
             (* (get_pseudo_sequence_score_localized game_state_after_move current_player move) 10)
             (* (get_pseudo_sequence_score_localized game_state_if_opponent_move opponent move) 10)
         )
