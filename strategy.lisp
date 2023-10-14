@@ -269,6 +269,31 @@
     )
 )
 
+;;; *********************************************
+;;; Name   : get_pseudo_sequence_score_localized
+;;; Arg    : game_state, player, position
+;;; Purpose: Calculates the pseudo score for the
+;;;          given player's sequences
+;;; Return : The pseudo score
+;;; Algo   : The pseudo score is calculated by
+;;;          summing the square of the length of
+;;;          localized sequences that are longer than 1
+;;; *********************************************
+(defun get_pseudo_sequence_score_localized (game_state player position)
+
+    (let*
+    
+        (
+            (sequences (get_all_stone_sequences_localized (get_board game_state) position))
+            (long_sequences (remove-if (lambda (sequence) (< (length sequence) 2)) sequences))
+        )
+        
+        (reduce #'+ (mapcar (lambda (sequence) (* (length sequence) (length sequence))) long_sequences))
+
+    )
+)
+
+
 
 ;;; *********************************************
 ;;; Name   : get_pseudo_score
@@ -313,6 +338,48 @@
 )
 
 ;;; *********************************************
+;;; Name   : get_pseudo_score_localized
+;;; Arg    : game_state, move
+;;; Purpose: Calculates the pseudo score for the
+;;;          given move
+;;; Return : The pseudo score
+;;; Algo   : The pseudo score is calculated by
+;;;          adding the score for the player
+;;;          and the opponent if the move is played
+;;;          by both
+;;; *********************************************
+(defun get_pseudo_score_localized (game_state move)
+    ; (declare (optimize (speed 3) (safety 0)))
+    ; (declare (type list game_state))
+    ; (declare (type string move))
+
+    (let*
+    
+        (
+            (current_player (get_current_player game_state))
+            (opponent (other_player (get_current_player game_state)))
+            (game_state_after_move (make_move game_state move))
+            
+            ; check what happens if opponent plays that move
+            (game_state_if_opponent_move (make_move 
+                                         (switch_turn game_state) 
+                                         move
+                                         )
+            )
+        
+        )
+        
+        (+ 
+            (* (get_round_score_localized game_state_after_move current_player move) 1000)
+            (* (get_round_score_localized game_state_if_opponent_move opponent move) 1000)
+            (* (get_pseudo_sequence_score_localized game_state_after_move current_player move) 10)
+            (* (get_pseudo_sequence_score_localized game_state_if_opponent_move opponent move) 10)
+        )
+
+    )
+)
+
+;;; *********************************************
 ;;; Name   : get_pseudo_scores
 ;;; Arg    : game_state, moves
 ;;; Purpose: Calculates the pseudo scores for the
@@ -325,6 +392,22 @@
     (mapcar (lambda (move) (list move (get_pseudo_score game_state move))) moves)
 
 )
+
+;;; *********************************************
+;;; Name   : get_pseudo_scores_localized
+;;; Arg    : game_state, moves
+;;; Purpose: Calculates the pseudo scores for the
+;;;          given moves
+;;; Return : A list of the list of moves and their
+;;;          pseudo scores
+;;; *********************************************
+(defun get_pseudo_scores_localized (game_state moves)
+
+    (mapcar (lambda (move) (list move (get_pseudo_score_localized game_state move))) moves)
+
+)
+
+
 
 
 ;;; *********************************************
@@ -361,7 +444,7 @@
                            
                                 (
                                     sort
-                                    (get_pseudo_scores game_state available_moves_with_neighbors)
+                                    (get_pseudo_scores_localized game_state available_moves_with_neighbors)
                                     (lambda (x y) (> (second x) (second y)))
                                 )
                             

@@ -1405,6 +1405,45 @@
 )
 
 ;;; *********************************************
+;;; Name   : get_all_stone_sequences_localized
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get all the sequences of the board
+;;;          that contain the stone at the position
+;;; Return : The sequences -- a list of lists
+;;; Algo   : Get all the sequences of the board at the position
+;;;          and then convert the sequences to stone
+;;;          sequences, then filter the stone sequences
+;;;          to get only the sequences that contain
+;;;          the stone at the position
+(defun get_all_stone_sequences_localized (board position)
+
+  ; filter the stone sequences to get only the sequences
+            ; that contain the stone
+            (remove-if-not
+              
+              #'(lambda (stone_sequence)
+                  (equal (list (get_stone board position)) (remove-duplicates stone_sequence :test #'equal))
+                )
+
+              (
+                convert_board_sequences_to_stone_sequences 
+                board 
+                (
+                  list
+                        (get_row board (row_number_from_position position))
+                        (get_column board (column_char_from_position position))
+                        (get_positive_diagonal board position)
+                        (get_negative_diagonal board position)
+                )
+              )
+            )
+)
+
+;;; *********************************************
 ;;; Name   : get_distance
 ;;; Args   : position_1, position_2
 ;;;          position_1 is a string that represents
@@ -1684,6 +1723,90 @@
         )
     )
 )
+
+
+;;; *********************************************
+;;; Name   : get_sequence_score_localized
+;;; Args   : board, stone, move
+;;;          board is the board like
+;;;          the one in the serialization lists
+;;;          move is the position string that the
+;;;          player played
+;;; Purpose: Get the local score of the player
+;;;          it only considers the sequence around
+;;;          the move
+;;; Return : The score -- a number
+(
+  defun get_sequence_score_localized (board stone move)
+    
+    (cond 
+
+      ; if the stone is using the full word instead of the single letter
+      ; then get the score of the stone sequences of the single letter
+      ((equal stone 'white) (get_sequence_score board 'W))
+      ((equal stone 'black) (get_sequence_score board 'B))
+      ((equal stone 'empty) (get_sequence_score board 'O))
+
+      (t
+          (let*
+
+              (
+                (all_stone_sequences_localized (get_all_stone_sequences_localized board move))
+                
+                (four_or_more_sequences
+                    (remove-if-not
+                        #'(lambda (sequence)
+                            (>= (length sequence) 4)
+                          )
+                        
+                        all_stone_sequences_localized
+                    )
+                )
+
+              )
+
+
+              (
+                    +
+                    ; Score for sequences of length 5 or more
+                    (
+                      *
+                    ; number of sequences of length 5 or more
+                    ( 
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (>= (length sequence) 5)
+                                    )
+                                  four_or_more_sequences
+                              )
+                      )
+
+                      5
+                    )
+
+
+                    ; Score for sequences of length 4
+                    (
+                      ; number of sequences of length 4
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (= (length sequence) 4)
+                                    )
+                                  four_or_more_sequences
+                              )
+                    )
+              
+              )
+
+          )
+      )
+    )
+)
+
 
 ;;;; ******************************************************************
 ;;;; End of board related functions

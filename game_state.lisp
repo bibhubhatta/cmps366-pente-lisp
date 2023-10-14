@@ -689,6 +689,36 @@
 
 
 ;;; *********************************************
+;;; Name   : get_round_score_localized
+;;; Args   : game_state, player, move
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;;          move is the move to be made
+;;;          player is the player
+;;;          move is the position string that the
+;;;          player played
+;;; Purpose: Get the local score of the player
+;;;          it only considers the sequence around
+;;;          the move
+;;; Return : The score -- a number
+;;; *********************************************
+(defun get_round_score_localized (game_state player move)
+  (
+    +
+    (
+      get_sequence_score_localized (get_board game_state) (get_stone_from_player game_state player) move
+    )
+    (
+      get_no_captures game_state player
+    )
+  )
+)
+
+
+
+
+
+;;; *********************************************
 ;;; Name   : print_game_state
 ;;; Args   : game_state
 ;;;          game_state is the game state like
