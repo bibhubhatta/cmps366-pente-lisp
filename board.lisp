@@ -965,12 +965,13 @@
   (cond
         ((null board) nil)
         (t (append 
-                (get_empty_positions (cdr board))
                 (get_empty_positions_in_row (car board) (length board))
+                (get_empty_positions (cdr board))
            )
         )
   )
 )
+
 
 ;;; *********************************************
 ;;; Name   : get_empty_positions_in_row
@@ -984,32 +985,39 @@
 ;;;          strings
 ;;; *********************************************
 (defun get_empty_positions_in_row (row row_num)
-  (cond
-        ((null row) nil)
-       
-        (
-          ; row needs to be reversed because,
-          ; to deduce the column char, we need
-          ; to get the length of the row
-          (equal (car (reverse row)) 'O) 
-          
-          (
-            cons 
-                  (format nil "~a~a" 
-                          (code-char (+ 64 (length row))) 
-                          (write-to-string row_num)
-                  )
-                  
-                  (get_empty_positions_in_row 
-                                ; remove the last element of the row
-                                ; and get the rest of the empty positions
-                                (reverse (cdr (reverse row))) 
-                                row_num
-                  )
-          )
-        )
+
+  (let*
+
+    (
+      (last_element (car (last row)))
+      (row_sans_last (butlast row))
+    )
+
+    (cond
+          ((null row) nil)
         
-        (t (get_empty_positions_in_row (reverse (cdr (reverse row))) row_num))
+          (
+            (equal last_element 'O) 
+            
+            (
+              cons 
+                    (format nil "~a~a" 
+                            (code-char (+ 64 (length row))) 
+                            (write-to-string row_num)
+                    )
+                    
+                    (get_empty_positions_in_row 
+                                  ; remove the last element of the row
+                                  ; and get the rest of the empty positions
+                                  row_sans_last 
+                                  row_num
+                    )
+            )
+          )
+          
+          (t (get_empty_positions_in_row row_sans_last row_num))
+    )
+
   )
 )
 
@@ -1405,6 +1413,105 @@
 )
 
 ;;; *********************************************
+;;; Name   : get_all_stone_sequences_localized
+;;; Args   : board, position
+;;;          board is a list of lists
+;;;          without the row/column markers,
+;;;          position is a string that represents
+;;;          the position of the stone in the board
+;;; Purpose: Get all the sequences of the board
+;;;          that contain the stone at the position
+;;; Return : The sequences -- a list of lists
+;;; Algo   : Get all the sequences of the board at the position
+;;;          and then convert the sequences to stone
+;;;          sequences, then filter the stone sequences
+;;;          to get only the sequences that contain
+;;;          the stone at the position
+(defun get_all_stone_sequences_localized (board position)
+
+      (list
+
+            (get_row_stone_sequence board position)
+            (get_column_stone_sequence board position)
+            (get_positive_diagonal_stone_sequence board position)
+            (get_negative_diagonal_stone_sequence board position)
+      )
+
+)
+
+
+(defun get_stone_sequence_in_direction (board position direction_function)  
+
+  (let*
+
+          (
+            (position_in_direction (funcall direction_function position))
+            (stone_in_direction (get_stone board position_in_direction))
+            (current_stone (get_stone board position))
+          )
+
+
+  
+
+      (cond
+            
+            (
+              (equal current_stone stone_in_direction)
+              (
+                cons 
+                      current_stone
+                      (get_stone_sequence_in_direction board position_in_direction direction_function)
+              )
+            )
+
+            (t nil)
+      )
+  )
+
+)
+
+
+(defun get_row_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'left_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'right_position)
+    )
+)
+
+
+(defun get_column_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'up_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'down_position)
+    )
+)
+
+(defun get_positive_diagonal_stone_sequence (board position)
+
+    (append
+
+          (reverse (get_stone_sequence_in_direction board position #'top_right_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'bottom_left_position)
+    )
+)
+
+(defun get_negative_diagonal_stone_sequence (board position)
+
+    (append
+          (reverse (get_stone_sequence_in_direction board position #'top_left_position))
+          (list (get_stone board position))
+          (get_stone_sequence_in_direction board position #'bottom_right_position)
+    )
+)
+
+;;; *********************************************
 ;;; Name   : get_distance
 ;;; Args   : position_1, position_2
 ;;;          position_1 is a string that represents
@@ -1619,45 +1726,242 @@
       ((equal stone 'empty) (get_sequence_score board 'O))
 
       (t
-          (
-            +
-            ; Score for sequences of length 5 or more
-            (
-              *
-            ; number of sequences of length 5 or more
-            ( 
-                length
-                      (
-                        remove-if-not
-                          #'(lambda (sequence)
-                              (>= (length sequence) 5)
-                            )
-                          (get_all_stone_sequences board stone)
-                      )
+          (let*
+
+              (
+                (all_stone_sequences (get_all_stone_sequences board stone))
+                
+                (four_or_more_sequences
+                    (remove-if-not
+                        #'(lambda (sequence)
+                            (>= (length sequence) 4)
+                          )
+                        
+                        all_stone_sequences
+                    )
+                )
+
               )
 
-              5
-            )
 
-
-            ; Score for sequences of length 4
-            (
-              ; number of sequences of length 4
-                length
-                      (
-                        remove-if-not
-                          #'(lambda (sequence)
-                              (= (length sequence) 4)
-                            )
-                          (get_all_stone_sequences board stone)
+              (
+                    +
+                    ; Score for sequences of length 5 or more
+                    (
+                      *
+                    ; number of sequences of length 5 or more
+                    ( 
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (>= (length sequence) 5)
+                                    )
+                                  four_or_more_sequences
+                              )
                       )
-            )
-            
+
+                      5
+                    )
+
+
+                    ; Score for sequences of length 4
+                    (
+                      ; number of sequences of length 4
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (= (length sequence) 4)
+                                    )
+                                  four_or_more_sequences
+                              )
+                    )
+              
+              )
+
           )
+            
+            
+            
+      
+          
+          
+
         )
     )
 )
 
+
+;;; *********************************************
+;;; Name   : get_sequence_score_localized
+;;; Args   : board, stone, move
+;;;          board is the board like
+;;;          the one in the serialization lists
+;;;          move is the position string that the
+;;;          player played
+;;; Purpose: Get the local score of the player
+;;;          it only considers the sequence around
+;;;          the move
+;;; Return : The score -- a number
+(
+  defun get_sequence_score_localized (board stone move)
+    
+    (cond 
+
+      ; if the stone is using the full word instead of the single letter
+      ; then get the score of the stone sequences of the single letter
+      ((equal stone 'white) (get_sequence_score board 'W))
+      ((equal stone 'black) (get_sequence_score board 'B))
+      ((equal stone 'empty) (get_sequence_score board 'O))
+
+      (t
+          (let*
+
+              (
+                (all_stone_sequences_localized (get_all_stone_sequences_localized board move))
+                
+                (four_or_more_sequences
+                    (remove-if-not
+                        #'(lambda (sequence)
+                            (>= (length sequence) 4)
+                          )
+                        
+                        all_stone_sequences_localized
+                    )
+                )
+
+              )
+
+
+              (
+                    +
+                    ; Score for sequences of length 5 or more
+                    (
+                      *
+                    ; number of sequences of length 5 or more
+                    ( 
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (>= (length sequence) 5)
+                                    )
+                                  four_or_more_sequences
+                              )
+                      )
+
+                      5
+                    )
+
+
+                    ; Score for sequences of length 4
+                    (
+                      ; number of sequences of length 4
+                        length
+                              (
+                                remove-if-not
+                                  #'(lambda (sequence)
+                                      (= (length sequence) 4)
+                                    )
+                                  four_or_more_sequences
+                              )
+                    )
+              
+              )
+
+          )
+      )
+    )
+)
+
+
 ;;;; ******************************************************************
 ;;;; End of board related functions
+;;;; ******************************************************************
+
+
+
+;;;; ******************************************************************
+;;;; Memoization
+;;;; ******************************************************************
+
+(load "memoization.lisp")
+
+; (memoize 'mark_rows )
+(memoize 'range )
+(memoize 'num_list_to_char_list )
+; (memoize 'mark_columns )
+; (memoize 'cartesian_board )
+; (memoize 'print_board_cell )
+; (memoize 'print_row )
+; (memoize 'print_board )
+; (memoize 'get_row )
+; (memoize 'get_column )
+(memoize 'up_position )
+(memoize 'down_position )
+(memoize 'left_position )
+(memoize 'right_position )
+(memoize 'top_right_position )
+(memoize 'bottom_left_position )
+(memoize 'top_left_position )
+(memoize 'bottom_right_position )
+(memoize 'get_neighbors )
+; (memoize 'get_neighboring_stones )
+; (memoize 'get_available_positions_with_neighbors )
+; (memoize 'get_top_right_diagonal )
+; (memoize 'get_bottom_left_diagonal )
+; (memoize 'get_top_left_diagonal )
+; (memoize 'get_bottom_right_diagonal )
+; (memoize 'get_positive_diagonal )
+; (memoize 'get_negative_diagonal )
+(memoize 'row_number_from_position )
+(memoize 'column_char_from_position )
+(memoize 'column_number_from_position )
+; (memoize 'get_stone )
+; (memoize 'get_stones )
+; (memoize 'replace_row )
+; (memoize 'replace_stone_in_row )
+; (memoize 'set_stone )
+(memoize 'convert_to_sequences )
+; (memoize 'unravel )
+; (memoize 'get_empty_positions )
+; (memoize 'get_empty_positions_in_row )
+; (memoize 'get_no_stones_on_board  )
+; (memoize 'remove_first_column )
+; (memoize 'get_first_column )
+; (memoize 'get_all_board_columns )
+(memoize 'get_first_row_positions )
+(memoize 'get_first_column_positions )
+(memoize 'get_last_row_positions )
+(memoize 'get_all_positive_diagonal_starts )
+(memoize 'get_all_negative_diagonal_starts )
+; (memoize 'get_all_positive_diagonals )
+; (memoize 'get_all_negative_diagonals )
+; (memoize 'get_all_diagonals )
+; (memoize 'get_all_board_sequences )
+; (memoize 'convert_board_sequences_to_stone_sequences )
+; (memoize 'get_all_stone_sequences )
+; (memoize 'get_all_stone_sequences_localized )
+; (memoize 'get_stone_sequence_in_direction )
+; (memoize 'get_row_stone_sequence )
+; (memoize 'get_column_stone_sequence )
+; (memoize 'get_positive_diagonal_stone_sequence )
+; (memoize 'get_negative_diagonal_stone_sequence )
+(memoize 'get_distance )
+(memoize 'get_empty_board )
+(memoize 'get_empty_row )
+; (memoize 'get_board_shape )
+(memoize 'get_no_rows )
+(memoize 'get_no_columns )
+(memoize 'get_center )
+(memoize 'is_first_move )
+(memoize 'is_third_move )
+; (memoize 'get_available_moves )
+; (memoize 'get_sequence_score )
+; (memoize 'get_sequence_score_localized )
+
+
+;;;; ******************************************************************
+;;;; End of memoization
 ;;;; ******************************************************************

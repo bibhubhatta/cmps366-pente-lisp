@@ -1,5 +1,3 @@
-(load "strategy.lisp")
-
 ;;;; ******************************************************************
 ;;;; Computer Player functions
 ;;;; Used for getting the computer to play the game

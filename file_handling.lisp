@@ -1,5 +1,3 @@
-(load "game_state.lisp")
-
 ;;;; ******************************************************************
 ;;;; File Handling Functions
 ;;;; Used for reading from and writing to files

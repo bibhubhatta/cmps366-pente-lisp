@@ -499,10 +499,23 @@
 (defun make_move (game_state move)
 
   (cond 
-  
+      ; commenting out the code to check move validity
+      ; because it is already checked for human player
+      ; during input, and computer only plays valid moves
+      ; this, hopefully, makes the game faster
+      ; remove if more security is required/ using
+      ; this function in other places
+      ; (
+      ;       ; if the move is invalid
+      ;       (not (member move (get_available_moves (get_board game_state)) :test #'string=))
+      ;       (format t "Invalid move!~%")
+      ;       ;return the same game state
+      ;       game_state
+      ; )
+
+
       (
-        ; if the move is valid
-        (member move (get_available_moves (get_board game_state)) :test #'string=)
+        t
 
         (
           ; switch the turn
@@ -525,15 +538,6 @@
         
         )
       
-      
-      )
-
-      (
-        ; if the move is invalid
-        t
-        (format t "Invalid move!~%")
-        ;return the same game state
-        game_state
       )
 
   )
@@ -682,6 +686,36 @@
       )
     )
 )
+
+
+;;; *********************************************
+;;; Name   : get_round_score_localized
+;;; Args   : game_state, player, move
+;;;          game_state is the game state like
+;;;          the one in the serialization lists
+;;;          move is the move to be made
+;;;          player is the player
+;;;          move is the position string that the
+;;;          player played
+;;; Purpose: Get the local score of the player
+;;;          it only considers the sequence around
+;;;          the move
+;;; Return : The score -- a number
+;;; *********************************************
+(defun get_round_score_localized (game_state player move)
+  (
+    +
+    (
+      get_sequence_score_localized (get_board game_state) (get_stone_from_player game_state player) move
+    )
+    (
+      get_no_captures game_state player
+    )
+  )
+)
+
+
+
 
 
 ;;; *********************************************
