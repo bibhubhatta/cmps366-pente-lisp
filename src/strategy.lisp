@@ -588,7 +588,7 @@
 
             (
                 (eq rationale 'sequence_blocking_move)
-                "prevent the opponent from making a sequence. "
+                "prevents the opponent from making a sequence. "
             )
 
             (t "is a random move closest to the center.")
