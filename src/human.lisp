@@ -117,7 +117,9 @@
 ;;; Return : t if human wins, nil otherwise
 ;;; *********************************************
 (defun human_wins_toss ()
-    
+
+    (princ "Both human and computer have the same score")    
+    (terpri)
     (princ "Tossing a coin to see who goes first...")
     (terpri)
     (princ "Heads or tails? (h/t): ")
@@ -141,14 +143,14 @@
 
             (
                 (equal coin_toss 1)
-                (princ "You won the toss!")
+                (princ "You won the toss! You will be playing the first turn as white.")
                 (terpri)
                 t
             )
 
             (
                 (equal coin_toss 0)
-                (princ "You lost the toss!")
+                (princ "You lost the toss! You will be playing the second turn as black.")
                 (terpri)
                 nil
             )
