@@ -85,7 +85,7 @@
                         ; if the move is not valid, then print an error message and
                         ; get the move again
                         t
-                        (print "Invalid move. Please try again.")
+                        (princ "Invalid move. Please try again.")
                         (terpri)
                         (get_human_move game_state)
                     )
