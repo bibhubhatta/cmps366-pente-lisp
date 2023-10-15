@@ -583,12 +583,12 @@
 
             (
                 (eq rationale 'sequence_making_move)
-                "is a sequence making move. "
+                "is a sequence making move."
             )
 
             (
                 (eq rationale 'sequence_blocking_move)
-                "prevents the opponent from making a sequence. "
+                "prevents the opponent from making a sequence."
             )
 
             (t "is a random move closest to the center.")
